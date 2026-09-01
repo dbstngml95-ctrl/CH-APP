@@ -1,8 +1,3 @@
-export interface RosterEntry {
-  studentNumber: string;
-  signedUp: boolean;
-}
-
 export interface Student {
   uid: string;
   studentNumber: string;

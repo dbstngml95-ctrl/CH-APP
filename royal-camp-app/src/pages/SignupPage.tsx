@@ -39,7 +39,7 @@ export default function SignupPage() {
     <div className="app-shell flex flex-col">
       <Header title="회원가입" showBack backTo="/login" />
       <form onSubmit={handleSubmit} className="p-6 flex-1">
-        <label className="block text-text-dark text-xs mb-1">학번</label>
+        <label className="block text-text-dark text-xs mb-1">아이디</label>
         <input
           value={studentNumber}
           onChange={(e) => setStudentNumber(e.target.value)}

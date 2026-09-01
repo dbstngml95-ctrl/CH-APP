@@ -3,14 +3,12 @@ import {
   DdaySettings,
   GuidebookContent,
   Notice,
-  RosterEntry,
   ScheduleDay,
   SchoolInfo,
   Student,
 } from "../types";
 
 const KEYS = {
-  roster: "rc_roster",
   students: "rc_students",
   notices: "rc_notices",
   schedule: "rc_schedule",
@@ -38,11 +36,6 @@ function write<T>(key: string, value: T) {
 // ---------- 최초 실행 시 데모용 초기 데이터 심기 ----------
 export function seedIfNeeded() {
   if (localStorage.getItem(KEYS.seeded)) return;
-
-  const roster: RosterEntry[] = ["20301", "20302", "20303", "20304", "20305"].map(
-    (n) => ({ studentNumber: n, signedUp: false })
-  );
-  write(KEYS.roster, roster);
 
   write<Notice[]>(KEYS.notices, [
     {
@@ -113,35 +106,6 @@ export function seedIfNeeded() {
   localStorage.setItem(KEYS.seeded, "true");
 }
 
-// ---------- roster ----------
-export function getRoster(): RosterEntry[] {
-  return read(KEYS.roster, []);
-}
-export function setRoster(entries: RosterEntry[]) {
-  write(KEYS.roster, entries);
-}
-export function addRosterNumbers(numbers: string[]) {
-  const roster = getRoster();
-  const existing = new Set(roster.map((r) => r.studentNumber));
-  numbers
-    .map((n) => n.trim())
-    .filter((n) => n && !existing.has(n))
-    .forEach((n) => roster.push({ studentNumber: n, signedUp: false }));
-  setRoster(roster);
-}
-export function isRegisteredNumber(studentNumber: string): boolean {
-  return getRoster().some((r) => r.studentNumber === studentNumber);
-}
-export function isSignedUp(studentNumber: string): boolean {
-  return getRoster().some((r) => r.studentNumber === studentNumber && r.signedUp);
-}
-export function markSignedUp(studentNumber: string) {
-  const roster = getRoster().map((r) =>
-    r.studentNumber === studentNumber ? { ...r, signedUp: true } : r
-  );
-  setRoster(roster);
-}
-
 // ---------- students ----------
 export function getStudents(): Student[] {
   return read(KEYS.students, []);
@@ -165,7 +129,6 @@ export function createStudent(input: {
   const students = getStudents();
   students.push(student);
   setStudents(students);
-  markSignedUp(input.studentNumber);
   return student;
 }
 export function updateStudent(uid: string, patch: Partial<Student>) {

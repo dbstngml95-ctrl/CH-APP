@@ -43,7 +43,7 @@ export default function MyInfoPage() {
               ) : (
                 <p className="text-text-dark text-sm font-medium">{student.name}</p>
               )}
-              <p className="text-text-dark text-xs mt-0.5">학번 {student.studentNumber}</p>
+              <p className="text-text-dark text-xs mt-0.5">아이디 {student.studentNumber}</p>
             </div>
           </div>
           <div className="border-t border-line-light pt-3 text-sm text-text-dark">

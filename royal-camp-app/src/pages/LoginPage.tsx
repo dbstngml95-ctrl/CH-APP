@@ -47,7 +47,7 @@ export default function LoginPage() {
           </div>
         ) : (
           <form onSubmit={handleSubmit}>
-            <label className="block text-text-dark text-xs mb-1">학번</label>
+            <label className="block text-text-dark text-xs mb-1">아이디</label>
             <input
               value={studentNumber}
               onChange={(e) => setStudentNumber(e.target.value)}
