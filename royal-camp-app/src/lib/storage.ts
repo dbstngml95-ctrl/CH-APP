@@ -141,6 +141,9 @@ export function resetStudentPassword(studentNumber: string, newPassword: string)
   );
   setStudents(students);
 }
+export function deleteStudent(studentNumber: string) {
+  setStudents(getStudents().filter((s) => s.studentNumber !== studentNumber));
+}
 
 // ---------- notices ----------
 export function getNotices(): Notice[] {

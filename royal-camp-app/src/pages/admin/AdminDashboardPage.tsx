@@ -39,7 +39,7 @@ export default function AdminDashboardPage() {
 
   return (
     <div className="min-h-screen flex bg-white">
-      <aside className="w-56 bg-bg-light p-4 flex flex-col">
+      <aside className="w-56 shrink-0 bg-bg-light p-4 flex flex-col">
         <p className="text-main-dark font-medium text-sm mb-6 px-2">로열캠프 알리미 관리자</p>
         <nav className="flex-1 space-y-1">
           {TABS.map((t) => (
@@ -61,7 +61,7 @@ export default function AdminDashboardPage() {
           로그아웃
         </button>
       </aside>
-      <main className="flex-1 p-8">{renderTab()}</main>
+      <main className="flex-1 min-w-0 overflow-x-auto p-8">{renderTab()}</main>
     </div>
   );
 }
