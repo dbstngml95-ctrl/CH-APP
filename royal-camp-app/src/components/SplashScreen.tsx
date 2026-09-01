@@ -19,7 +19,7 @@ export default function SplashScreen({ onDone }: { onDone: () => void }) {
       }`}
     >
       <img
-        src="/logo.png"
+        src={`${import.meta.env.BASE_URL}icon-192.png`}
         alt=""
         className="w-16 h-16 rounded-2xl object-cover mb-4"
         onError={(e) => ((e.target as HTMLImageElement).style.display = "none")}
