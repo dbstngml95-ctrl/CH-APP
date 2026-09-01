@@ -1,6 +1,6 @@
 # CH APP
 
-A collection of small, self-contained single-page web apps. Each one lives in its own folder and runs directly by opening `index.html` in a browser — no build step or dependencies required.
+A collection of small, self-contained web apps. Each one lives in its own folder.
 
 ## Projects
 
@@ -13,10 +13,21 @@ A classic brick-breaker arcade game built with the Canvas API. Move the paddle w
 ### [particle-doodle](particle-doodle/index.html)
 A playful drawing canvas that emits colorful particle trails as you draw. Pick a color and brush size, doodle with mouse or touch, and save your drawing as a PNG.
 
+### [royal-camp-app](royal-camp-app)
+A React + Vite + TypeScript camp-notification app (로열캠프 알리미): student signup/login, notices, guidebook, and an admin dashboard. Uses `localStorage`/`sessionStorage` as a stand-in database, so it runs with no backend. See its own [README](royal-camp-app/README.md) for demo credentials.
+
 ## Running locally
 
-No installation needed — just open any project's `index.html` file in a browser, for example:
+`focus-timer`, `block-breaker`, and `particle-doodle` need no installation — just open the project's `index.html` file in a browser, for example:
 
 ```bash
 open focus-timer/index.html
+```
+
+`royal-camp-app` is a Vite project and needs Node.js:
+
+```bash
+cd royal-camp-app
+npm install
+npm run dev
 ```
