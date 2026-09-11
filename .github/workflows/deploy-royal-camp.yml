@@ -5,6 +5,7 @@ on:
     branches: [main]
     paths:
       - "royal-camp-app/**"
+      - "royal-camp-app-v2/**"
       - ".github/workflows/deploy-royal-camp.yml"
   workflow_dispatch:
 
@@ -36,6 +37,10 @@ jobs:
         env:
           VITE_ADMIN_ID: ${{ secrets.VITE_ADMIN_ID }}
           VITE_ADMIN_PASSWORD: ${{ secrets.VITE_ADMIN_PASSWORD }}
+      - name: Add v2 mockup as a static subpath
+        run: |
+          mkdir -p royal-camp-app/dist/v2
+          cp royal-camp-app-v2/index.html royal-camp-app/dist/v2/index.html
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:

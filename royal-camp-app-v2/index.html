@@ -1,0 +1,973 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>로열캠프 알리미</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
+<style>
+  * { box-sizing: border-box; }
+  body { margin:0; font-family:'Pretendard',sans-serif; background:#0B1F3E; }
+  .serif { font-family:'Playfair Display', Georgia, serif; }
+  .app { max-width:420px; margin:0 auto; min-height:100vh; background:#0B1F3E; color:#fff; position:relative; }
+  .admin-app { background:#fff; color:#2B2118; }
+  .hidden { display:none !important; }
+  .header { display:flex; justify-content:space-between; align-items:center; padding:14px 18px; border-bottom:1px solid #1F3A63; }
+  .header-left { display:flex; align-items:center; gap:8px; }
+  .badge { width:26px;height:26px;border:1px solid #C9A961;border-radius:6px;display:flex;align-items:center;justify-content:center;color:#C9A961;font-size:11px; }
+  .back-btn { background:none;border:none;color:#fff;font-size:20px;cursor:pointer; }
+  .bell { position:relative; color:#C9A961; font-size:17px; background:none; border:none; cursor:pointer; }
+  .bell-count { position:absolute; top:-6px; right:-8px; background:#C9A961; color:#0B1F3E; font-size:9px; width:14px;height:14px;border-radius:50%; display:flex;align-items:center;justify-content:center; }
+  .crest { display:flex; flex-direction:column; align-items:center; padding:30px 20px 20px; }
+  .crest-badge { width:64px;height:64px;border:1px solid #C9A961;border-radius:16px;display:flex;align-items:center;justify-content:center;margin-bottom:12px; }
+  .crest-title { font-size:22px; letter-spacing:1px; font-weight:700; }
+  .crest-sub { color:#C9A961; font-size:10px; letter-spacing:1.5px; margin-top:6px; text-align:center; line-height:1.6; }
+  .today-card { background:#F4EFE6; color:#2B2118; margin:0 16px; border-radius:16px; padding:16px 18px; }
+  .today-label { font-size:9px; letter-spacing:1.5px; color:#8A7A5C; }
+  .today-day { display:flex; justify-content:space-between; align-items:baseline; }
+  .today-day span:first-child { font-size:22px; font-weight:700; }
+  .today-day span:last-child { font-size:11px; color:#8A7A5C; }
+  .today-desc { font-size:12px; line-height:1.7; margin-top:8px; }
+  .today-link { font-size:11px; color:#8A7A5C; text-align:right; margin-top:8px; cursor:pointer; }
+  .menu-label { color:#C9A961; font-size:10px; letter-spacing:1.5px; padding:20px 20px 10px; }
+  .menu-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; padding:0 16px; }
+  .menu-tile { background:#122A50; border-radius:14px; padding:16px; text-align:left; cursor:pointer; border:none; color:#fff; }
+  .menu-tile .icon { color:#C9A961; font-size:18px; }
+  .menu-tile .label { font-family:'Playfair Display',serif; font-size:13px; margin-top:18px; }
+  .menu-tile .sub { font-size:10px; color:#a9bbd6; }
+  .row-link { display:flex; justify-content:space-between; align-items:center; width:100%; background:none; border:none; border-top:1px solid #1F3A63; color:#fff; padding:14px 4px; font-size:12px; cursor:pointer; text-align:left; }
+  .row-link .chev { color:#a9bbd6; }
+  .list-page-title { padding:16px 20px 8px; }
+  .list-page-title .kicker { color:#C9A961; font-size:9px; letter-spacing:1.5px; }
+  .list-page-title .title { font-family:'Playfair Display',serif; font-size:20px; margin-top:4px; }
+  .list-item { width:100%; text-align:left; background:none; border:none; border-top:1px solid #1F3A63; padding:16px 20px; color:#fff; cursor:pointer; display:flex; justify-content:space-between; align-items:center; gap:10px; }
+  .list-item .t { font-size:13px; }
+  .list-item .s { font-size:11px; color:#a9bbd6; margin-top:4px; }
+  .detail-body { padding:20px; font-size:13px; line-height:1.8; white-space:pre-line; }
+  .btn-gold { width:100%; height:44px; border-radius:12px; background:#C9A961; color:#0B1F3E; border:none; font-size:14px; font-weight:600; cursor:pointer; margin-top:16px; }
+  .modal-overlay { position:fixed; inset:0; background:rgba(0,0,0,0.55); display:flex; align-items:center; justify-content:center; z-index:80; padding:0 24px; }
+  .modal-box { background:#fff; color:#2B2118; border-radius:16px; padding:20px; width:100%; max-width:340px; }
+  .admin-header { display:flex; align-items:center; gap:10px; padding:16px 18px; border-bottom:1px solid #eee; }
+  .admin-tabs { display:flex; border-bottom:1px solid #eee; }
+  .admin-tab { flex:1; text-align:center; padding:12px 0; font-size:11px; color:#999; cursor:pointer; background:none; border:none; border-bottom:2px solid transparent; }
+  .admin-tab.active { color:#B33A3A; border-bottom-color:#B33A3A; }
+  .admin-menu-row { display:flex; justify-content:space-between; align-items:center; padding:16px 4px; border-top:1px solid #f1f1f1; width:100%; background:none; border-left:none;border-right:none; cursor:pointer; text-align:left; }
+  .absentee-banner { background:#B33A3A; color:#fff; border-radius:12px; padding:12px 16px; display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; font-size:11px; }
+  .att-card { border:1px solid #f0f0f0; border-radius:12px; padding:14px; margin-bottom:10px; }
+  .vote-row { display:flex; gap:8px; margin-top:8px; }
+  .vote-btn { flex:1; height:34px; border-radius:8px; border:1px solid #ddd; background:#fff; font-size:14px; cursor:pointer; }
+  .vote-btn.up-active { background:#111; border-color:#111; color:#fff; }
+  .vote-btn.down-active { background:#B33A3A; border-color:#B33A3A; color:#fff; }
+  .penalty-box { background:#FCEBEB; color:#B33A3A; text-align:center; font-size:11px; border-radius:8px; padding:8px; margin-top:8px; }
+  .p-name { font-size:13px; font-weight:600; }
+  .p-meta { font-size:11px; color:#999; margin-bottom:8px; }
+  input[type=text], input.search { width:100%; height:36px; border:1px solid #ddd; border-radius:8px; padding:0 10px; font-size:12.5px; }
+  select { width:calc(100% - 32px); height:38px; border:1px solid #ddd; border-radius:8px; padding:0 10px; font-size:13px; margin:16px 16px 0; }
+  .filter-btn { padding:5px 12px; border-radius:999px; font-size:11px; border:1px solid #ddd; background:#fff; color:#666; cursor:pointer; }
+  .filter-btn.active { background:#111; color:#fff; border-color:#111; }
+  .participant-row { display:flex; justify-content:space-between; align-items:center; padding:12px 16px; border-top:1px solid #f5f5f5; cursor:pointer; }
+  .abs-tag { background:#FCEBEB; color:#B33A3A; font-size:10px; padding:2px 8px; border-radius:6px; }
+  canvas.sigpad { width:100%; height:120px; border:1px solid #ddd; border-radius:10px; touch-action:none; }
+  .sheet-overlay { position:fixed; inset:0; height:100vh; background:rgba(0,0,0,0.5); display:flex; align-items:center; justify-content:center; z-index:60; }
+  .sheet-overlay .app-frame { max-width:420px; width:100%; position:relative; height:100vh; pointer-events:none; display:flex; align-items:center; justify-content:center; }
+  .sheet-card { position:relative; width:100%; background:#F4EFE6; color:#2B2118; border-radius:20px; padding:22px 20px 28px; height:82vh; max-height:82vh; overflow-y:auto; pointer-events:auto; animation:slideUp .32s ease-out; }
+  @keyframes slideUp { from { transform:translateY(100%); } to { transform:translateY(0); } }
+  .sheet-close { position:absolute; top:16px; right:16px; width:26px;height:26px;border-radius:50%;background:#fff;border:none;color:#8A7A5C;font-size:13px;cursor:pointer; }
+  .sheet-kicker { color:#C9A961; font-size:9px; letter-spacing:1.5px; }
+  .sheet-title { font-size:19px; font-weight:700; margin:6px 0 14px; }
+  .sheet-hr { border:none; border-top:1px solid #E3D9C7; margin:14px 0; }
+  .sheet-section-title { font-size:11px; font-weight:700; letter-spacing:0.5px; margin-bottom:6px; }
+</style>
+</head>
+<body>
+<div id="app" class="app"></div>
+
+<script>
+// ---------------- DATA ----------------
+const PARTICIPANTS = [
+  {id:"p01",name:"강민지",school:"인하여자고등학교",type:"기업 추천",note:"토론 대회 동상 수상",baseScore:92},
+  {id:"p02",name:"고은찬",school:"명성고등학교",type:"기업 추천",baseScore:78},
+  {id:"p03",name:"권준",school:"한결고등학교",type:"기회균등",baseScore:74},
+  {id:"p04",name:"김성수",school:"한림고등학교",type:"학교장 추천",note:"국제 수학 올림피아드 동상 수상",baseScore:80},
+  {id:"p05",name:"김시연",school:"신명외국어고등학교",type:"성적우수전형",note:"전국 영어 스피치 대회 2등",baseScore:89},
+  {id:"p06",name:"김해승",school:"현강고등학교",type:"기회균등",baseScore:52},
+  {id:"p07",name:"김현주",school:"동림고등학교",type:"학교장 추천",baseScore:70},
+  {id:"p08",name:"남주형",school:"현성고등학교",type:"성적우수전형",baseScore:68},
+  {id:"p09",name:"문지원",school:"해솔고등학교",type:"VIP 추천",baseScore:63},
+  {id:"p10",name:"민홍기",school:"은성국제고등학교",type:"기업 추천",note:"5개국어 가능",baseScore:87},
+  {id:"p11",name:"배수아",school:"서린여자고등학교",type:"학교장 추천",baseScore:66},
+  {id:"p12",name:"서동화",school:"해솔고등학교",type:"기회균등",note:"테니스 청소년 국가대표 출신",baseScore:48},
+  {id:"p13",name:"송언석",school:"대현고등학교",type:"기업 추천",baseScore:71},
+  {id:"p14",name:"신예림",school:"청연여자고등학교",type:"성적우수전형",baseScore:82},
+  {id:"p15",name:"연지혜",school:"해온고등학교",type:"기업 추천",baseScore:60},
+  {id:"p16",name:"이윤아",school:"명선고등학교",type:"기업추천",note:"서울무용콩쿠르 프리주니어 1위",baseScore:85},
+  {id:"p17",name:"이채현",school:"윤서여자고등학교",type:"기업 추천",baseScore:58},
+  {id:"p18",name:"임다현",school:"세령여자고등학교",type:"VIP 추천",note:"채황법인 대표 자제",baseScore:55},
+  {id:"p19",name:"홍세은",school:"동명외국어고등학교",type:"학교장 추천",baseScore:64},
+  {id:"p20",name:"황도윤",school:"가온국제고등학교",type:"학교장 추천",baseScore:45},
+];
+
+const GUIDEBOOK = [
+  {id:"overview",no:"01",title:"캠프 개요",summary:"로열캠프의 목적과 프로그램 안내.",body:"로열캠프는 청담국제고등학교가 주최하는 3박 4일 리더십 프로그램입니다. 국내외 저명 인사와의 세션, 예술 및 인문 소양 프로그램, 그룹 프로젝트를 통해 참가자의 리더십과 국제 감각을 함양하는 것을 목표로 합니다.\n\n기간: 2026.06.11 ~ 06.13\n장소: 청담국제고등학교 및 협력 기관 시설\n대상: 2학년 전형 선발 참가자 20명"},
+  {id:"rules",no:"02",title:"캠프 규칙",summary:"참가자가 지켜야 할 기본 규칙.",body:"1. 모든 프로그램은 정시에 시작되며, 집합 시간을 반드시 준수합니다.\n2. 프로그램 진행 중 개인 행동은 금지되며, 이동 시 반드시 담당 스태프의 안내를 따릅니다.\n3. 타 참가자에 대한 예의를 지키며, 부적절한 언행은 즉시 제재 대상이 됩니다.\n4. 시설 및 비품은 소중히 다루어 주세요."},
+  {id:"schedule-info",no:"03",title:"일정표",summary:"DAY 1–3 프로그램 구성 안내.",body:"전체 일정은 하단 SCHEDULE 메뉴에서 날짜별로 확인하실 수 있습니다. 일정은 현장 상황에 따라 사전 공지 없이 일부 변경될 수 있습니다."},
+  {id:"packing",no:"04",title:"준비물 안내",summary:"캠프 참가 전 확인해야 할 준비물.",body:"필수 준비물: 신분증, 개인 세면도구, 여벌 옷, 정장 또는 세미 정장 1벌(웰컴 디너용), 필기구\n권장 준비물: 개인 상비약, 우산\n반입 금지 물품: 위험 물품, 음주 및 흡연 관련 물품"},
+  {id:"notes",no:"05",title:"참여자 유의사항",summary:"집합, 이동, 프로그램 참여 관련 안내.",body:"모든 이동은 지정된 동선과 시간에 따라 단체로 이루어집니다. 개별 이동은 원칙적으로 허용되지 않으며, 불가피한 경우 담당 스태프의 사전 승인을 받아야 합니다."},
+  {id:"facilities",no:"06",title:"시설 안내",summary:"주요 시설 및 운영본부 위치 안내.",body:"그랜드 로비(1층 · 입소/등록), 크라운 홀(2층 · 주요 세션), 그랜드 다이닝(1층 · 식사), 로열 라운지(3층 · 그룹 미팅), 운영본부(1층 로비 안내데스크)"},
+  {id:"dress-code",no:"07",title:"복장 안내",summary:"프로그램별 TPO 및 복장 기준.",body:"일반 세션: 단정한 캐주얼\n갤러리 클래스 등 외부 공식 프로그램: 세미 정장 권장, 슬리퍼·트레이닝복 지양\n웰컴 디너: 정장 또는 이에 준하는 복장"},
+  {id:"emergency",no:"08",title:"비상 및 연락 안내",summary:"응급 상황 및 운영본부 연락 방법.",body:"응급 상황 발생 시 즉시 인근 스태프 또는 운영본부(1층 로비)로 연락해 주세요. 각 조 담당 멘토의 연락처는 입소 시 배부된 명찰 뒷면에서 확인할 수 있습니다."},
+  {id:"agreement",no:"09",title:"비밀유지서약서",summary:"캠프 보안 수칙 및 전자서명.",body:"본인은 청담국제고 로열캠프 프로그램과 관련된 모든 정보를 비밀로 유지할 것을 다음과 같이 서약합니다.\n1. 캠프 진행 상황을 SNS 등에 업로드하지 않는다.\n2. 캠프 프로그램을 무단으로 촬영하거나 녹음하지 않는다.\n3. 위 사항을 위반할 경우 캠프 측의 조치를 따른다.\n4. 비밀유지의무는 캠프 종료 후에도 유효하다."},
+];
+
+const SCHEDULE = [
+  {day:"DAY 1",date:"JUN 11",items:[{time:"14:00",a:"입소 및 등록",l:"그랜드 로비"},{time:"16:00",a:"오리엔테이션",l:"크라운 홀"},{time:"18:30",a:"웰컴 디너",l:"그랜드 다이닝"},{time:"21:00",a:"그룹 미팅",l:"로열 라운지"}]},
+  {day:"DAY 2",date:"JUN 12",items:[{time:"07:30",a:"조식",l:"다이닝 홀"},{time:"09:10",a:"오전 집합",l:"그랜드 로비"},{time:"09:30",a:"갤러리 수업",l:"청담 아트센터"},{time:"13:30",a:"도슨트 프로그램",l:"메인 갤러리"},{time:"18:00",a:"디너",l:"그랜드 다이닝"}]},
+  {day:"DAY 3",date:"JUN 13",items:[{time:"08:00",a:"조식",l:"다이닝 홀"},{time:"09:00",a:"리더십 워크숍",l:"아카데미 룸"},{time:"13:00",a:"그룹 프로젝트",l:"크라운 홀"},{time:"16:30",a:"수료식",l:"크라운 홀"},{time:"17:30",a:"퇴소",l:"그랜드 로비"}]},
+];
+
+const MATERIALS = [
+  {id:"m1",type:"PDF",title:"2026 로열캠프 참가자 안내서",meta:"8 PAGES · UPDATED JUN 10"},
+  {id:"m2",type:"PDF",title:"갤러리 클래스 워크시트",meta:"DAY 2 · 4 PAGES"},
+  {id:"m3",type:"PDF",title:"리더십 워크숍 브리프",meta:"DAY 3 · 6 PAGES"},
+  {id:"m4",type:"MAP",title:"로열캠프 시설 배치도",meta:"FACILITY MAP · 1 PAGE"},
+];
+
+const NOTICES = [
+  {id:"n1",title:"조식 및 오전 집합 시간 안내",date:"2026.06.11",dept:"운영본부",body:"DAY 2 조식은 07:30부터 다이닝 홀에서 제공됩니다. 오전 집합은 09:10까지 그랜드 로비로 모여주시기 바랍니다."},
+  {id:"n2",title:"갤러리 클래스 복장 안내",date:"2026.06.11",dept:"프로그램팀",body:"외부 공식 프로그램인 만큼 세미 정장을 권장드립니다. 슬리퍼, 트레이닝복 착용은 지양해 주세요."},
+  {id:"n3",title:"캠프 촬영 및 SNS 업로드 관련 안내",date:"2026.06.10",dept:"운영본부",body:"캠프 프로그램 진행 상황은 비밀유지서약서에 따라 개인 SNS 등 외부에 업로드할 수 없습니다."},
+  {id:"n4",title:"로열 나이트 좌석 및 입장 안내",date:"2026.06.10",dept:"행사운영팀",body:"로열 나이트 좌석은 사전 배정된 자리로 안내됩니다. 입장은 18:00부터 그랜드 다이닝 입구에서 가능합니다."},
+];
+
+const QNA = [
+  {cat:"프로그램",q:"프로그램 진행 중 휴대폰을 사용할 수 있나요?",a:"공식 수업 및 프로그램 진행 중에는 개인 휴대폰 사용을 삼가 주세요. 프로그램 시작 전 무음 모드로 전환해 주시고, 긴급 연락이 필요한 경우 담당 스태프에게 먼저 알려주세요."},
+  {cat:"생활",q:"캠프 기간 중 외출이 필요한 경우 어떻게 하나요?",a:"개별 외출은 원칙적으로 제한됩니다. 불가피한 사유가 있는 경우 운영본부에 사유를 전달하고 보호자 확인 후 외출 승인을 받아야 합니다."},
+  {cat:"복장",q:"갤러리 클래스에는 어떤 복장이 적절한가요?",a:"외부 공식 프로그램인 만큼 지나치게 캐주얼한 복장보다는 단정한 세미 캐주얼을 권장합니다. 슬리퍼, 트레이닝복은 지양해 주세요."},
+  {cat:"시설",q:"분실물이 생기면 어디에 문의하나요?",a:"그랜드 로비 1층 운영본부의 LOST & FOUND 데스크에 문의해 주세요. 습득물은 캠프 종료일까지 운영본부에서 보관합니다."},
+];
+
+const NOTIFICATIONS = [
+  {t:"갤러리 수업 시작 10분 전입니다.",m:"09:20 · 청담 아트센터로 이동해 주세요."},
+  {t:"오전 집합 장소가 변경되었습니다.",m:"08:40 · 집합 장소가 그랜드 로비에서 크라운 홀로 변경되었습니다."},
+];
+
+// ---------------- EDITABLE CONTENT STORE ----------------
+function makeStore(key, defaults){
+  return {
+    get(){
+      const raw = localStorage.getItem(key);
+      if(raw){ try { return JSON.parse(raw); } catch(e){} }
+      localStorage.setItem(key, JSON.stringify(defaults));
+      return JSON.parse(JSON.stringify(defaults));
+    },
+    set(val){ localStorage.setItem(key, JSON.stringify(val)); }
+  };
+}
+const noticeStore = makeStore("rc2_notices", NOTICES);
+const guidebookStore = makeStore("rc2_guidebook", GUIDEBOOK);
+const scheduleStore = makeStore("rc2_schedule", SCHEDULE);
+const materialsStore = makeStore("rc2_materials", MATERIALS);
+function getNotices(){ return noticeStore.get(); }
+function getGuidebook(){ return guidebookStore.get(); }
+function getSchedule(){ return scheduleStore.get(); }
+function getMaterials(){ return materialsStore.get(); }
+
+const scoreStore = makeStore("rc2_participant_scores", Object.fromEntries(PARTICIPANTS.map(p=>[p.id, p.baseScore])));
+function getScores(){ return scoreStore.get(); }
+function getScore(id){ const scores = getScores(); return scores[id] !== undefined ? scores[id] : (PARTICIPANTS.find(p=>p.id===id)||{}).baseScore || 0; }
+function setScore(id, value){ const scores = getScores(); scores[id] = value; scoreStore.set(scores); }
+
+const todayCardStore = makeStore("rc2_today_card", { dayLabel:"DAY 2", date:"JUN 12", desc:"오늘은 갤러리 수업이 있는 날입니다.\nTPO에 맞는 적절한 복장을 갖추어 참석해 주세요." });
+function getTodayCard(){ return todayCardStore.get(); }
+function setTodayCard(val){ todayCardStore.set(val); }
+
+// ---------------- STATE ----------------
+const STATE_KEY = "rc2_participant_state_static";
+const EVALUATORS = ["한태희","차세미","성소윤","이준","원강우"];
+
+function loadStates(){
+  let raw = localStorage.getItem(STATE_KEY);
+  if(raw){
+    try {
+      const parsed = JSON.parse(raw);
+      let migrated = false;
+      PARTICIPANTS.forEach(p=>{
+        if(!parsed[p.id]){
+          const evaluatorVotes = {};
+          EVALUATORS.forEach(ev => evaluatorVotes[ev] = null);
+          parsed[p.id] = { attendance:"present", attendanceVote:null, evaluatorVotes };
+          migrated = true;
+          return;
+        }
+        if(!parsed[p.id].evaluatorVotes){
+          parsed[p.id].evaluatorVotes = {};
+          migrated = true;
+        }
+        EVALUATORS.forEach(ev=>{
+          if(parsed[p.id].evaluatorVotes[ev] === undefined){ parsed[p.id].evaluatorVotes[ev] = null; migrated = true; }
+        });
+        if(parsed[p.id].attendanceVote === undefined){ parsed[p.id].attendanceVote = null; migrated = true; }
+      });
+      if(migrated) localStorage.setItem(STATE_KEY, JSON.stringify(parsed));
+      return parsed;
+    } catch(e){}
+  }
+  const s = {};
+  PARTICIPANTS.forEach(p=>{
+    const evaluatorVotes = {};
+    EVALUATORS.forEach(ev => evaluatorVotes[ev] = null);
+    s[p.id] = { attendance: (p.id==="p06"||p.id==="p12") ? "absent" : "present", attendanceVote:null, evaluatorVotes };
+  });
+  localStorage.setItem(STATE_KEY, JSON.stringify(s));
+  return s;
+}
+let pStates = loadStates();
+function saveStates(){ localStorage.setItem(STATE_KEY, JSON.stringify(pStates)); }
+function penalty(s){
+  let p=0;
+  if(s.attendanceVote==="down") p+=10;
+  EVALUATORS.forEach(ev=>{ if(s.evaluatorVotes && s.evaluatorVotes[ev]==="down") p+=10; });
+  return p;
+}
+
+const app = document.getElementById('app');
+let evalSelected = PARTICIPANTS[0].id;
+let scheduleActiveDay = "DAY 2";
+
+function render(html){ app.innerHTML = html; window.scrollTo(0,0); }
+function go(hash){ location.hash = hash; }
+
+function header(title, opts){
+  opts = opts || {};
+  const left = opts.back
+    ? `<button class="back-btn" onclick="go('${opts.backTo || '#/home'}')">&#8249;</button>`
+    : `<div class="badge">RC</div>`;
+  const bell = !opts.back
+    ? `<button class="bell" onclick="go('#/notifications')">&#128276;${NOTIFICATIONS.length ? `<span class="bell-count">${NOTIFICATIONS.length}</span>`:''}</button>`
+    : '';
+  return `<div class="header"><div class="header-left">${left}<span style="font-size:13px;">${title}</span></div>${bell}</div>`;
+}
+
+// ---------------- PAGES: STUDENT ----------------
+function pageHome(){
+  const tc = getTodayCard();
+  render(`
+    ${header('로열캠프 알리미')}
+    <div class="crest">
+      <span style="color:#C9A961;font-size:20px;margin-bottom:4px;">&#9819;</span>
+      <div class="crest-badge"><span class="serif" style="color:#C9A961;font-weight:700;font-size:24px;">RC</span></div>
+      <div class="serif crest-title">ROYAL CAMP</div>
+      <div class="crest-sub">CHEONGDAM INTERNATIONAL<br/>HIGH SCHOOL</div>
+    </div>
+    <div class="today-card">
+      <div class="today-label">TODAY</div>
+      <div class="today-day"><span class="serif">${tc.dayLabel}</span><span>${tc.date}</span></div>
+      <div class="today-desc">${tc.desc.replace(/\n/g,'<br/>')}</div>
+      <div class="today-link" onclick="go('#/schedule')">전체 일정 보기 &#8250;</div>
+    </div>
+    <div class="menu-label">CAMP MENU</div>
+    <div class="menu-grid">
+      <button class="menu-tile" onclick="go('#/guidebook')"><div class="icon">&#9820;</div><div class="serif label">GUIDE</div><div class="sub">가이드북</div></button>
+      <button class="menu-tile" onclick="go('#/schedule')"><div class="icon">&#9201;</div><div class="serif label">SCHEDULE</div><div class="sub">일정</div></button>
+      <button class="menu-tile" onclick="go('#/materials')"><div class="icon">&#9671;</div><div class="serif label">MATERIAL</div><div class="sub">캠프 자료</div></button>
+      <button class="menu-tile" onclick="go('#/notice')"><div class="icon">&#9776;</div><div class="serif label">NOTICE</div><div class="sub">공지사항</div></button>
+    </div>
+    <div style="padding:8px 16px 0;">
+      <button class="row-link" onclick="go('#/qna')">Q&amp;A <span class="chev">&#8250;</span></button>
+      <button class="row-link" onclick="go('#/survey')">설문조사 <span class="chev">&#8250;</span></button>
+    </div>
+    <button class="row-link" style="justify-content:center;color:#5c7096;padding:20px 0;" onclick="go('#/admin')">&#9662; 관리자 모드</button>
+  `);
+}
+
+function pageGuidebookList(openId){
+  const gb = getGuidebook();
+  render(`
+    ${header('가이드북',{back:true})}
+    <div class="list-page-title"><div class="kicker">ROYAL CAMP GUIDE</div><div class="serif title">Guidebook</div></div>
+    ${gb.map(g=>`
+      <button class="list-item" onclick="go('#/guidebook/${g.id}')">
+        <div><div class="t">${g.no} &middot; ${g.title}</div><div class="s">${g.summary}</div></div>
+        <span class="chev">&#8250;</span>
+      </button>`).join('')}
+    <div id="sheet-root"></div>
+  `);
+  if(openId) openGuidebookSheet(openId);
+}
+
+function openGuidebookSheet(id){
+  const item = getGuidebook().find(g=>g.id===id);
+  if(!item) return;
+  const agreement = getAgreement();
+  const isAgreementDone = item.id==='agreement' && agreement && agreement.signed;
+  document.getElementById('sheet-root').innerHTML = `
+    <div class="sheet-overlay" onclick="if(event.target===this) closeSheet()">
+      <div class="app-frame">
+        <div class="sheet-card">
+          <button class="sheet-close" onclick="closeSheet()">&#10005;</button>
+          <div class="sheet-kicker">ROYAL CAMP GUIDE</div>
+          <div class="sheet-title">${item.no} &middot; ${item.title}</div>
+          ${isAgreementDone ? `<div style="background:#fff;border:1px solid #E3D9C7;border-radius:10px;padding:10px 14px;text-align:center;font-size:12px;color:#8A7A5C;margin-bottom:14px;">${new Date(agreement.signedAt).toLocaleDateString('ko-KR')} 서명 완료</div>` : ''}
+          <div style="font-size:13px;line-height:1.8;white-space:pre-line;">${item.body}</div>
+          ${item.id==='agreement' && !isAgreementDone ? `<button class="btn-gold" onclick="openSignature()">전자서명 하기</button>` : ''}
+        </div>
+      </div>
+    </div>
+    <div id="sig-modal-root"></div>
+  `;
+}
+function closeSheet(){
+  document.getElementById('sheet-root').innerHTML = '';
+  go('#/guidebook');
+}
+function pageGuidebookDetail(id){
+  pageGuidebookList(id);
+}
+
+const AGREEMENT_KEY = "rc2_agreement";
+function getAgreement(){
+  const raw = localStorage.getItem(AGREEMENT_KEY);
+  if(!raw) return null;
+  try { return JSON.parse(raw); } catch(e){ return null; }
+}
+function saveAgreement(dataUrl){
+  localStorage.setItem(AGREEMENT_KEY, JSON.stringify({ signed:true, dataUrl, signedAt: new Date().toISOString() }));
+}
+
+function openSignature(){
+  document.getElementById('sig-modal-root').innerHTML = `
+    <div class="modal-overlay">
+      <div class="modal-box">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+          <span style="font-size:11px;letter-spacing:1px;color:#8A7A5C;">ELECTRONIC SIGNATURE</span>
+          <span style="cursor:pointer;color:#999;" onclick="closeSignature()">&#10005;</span>
+        </div>
+        <p style="font-size:14px;font-weight:600;margin:0 0 6px;">서명 입력</p>
+        <p style="font-size:11px;color:#8A7A5C;margin:0 0 10px;">아래 영역에 손가락이나 마우스로 서명해 주세요.</p>
+        <canvas id="sigcanvas" class="sigpad" width="300" height="120"></canvas>
+        <div style="display:flex;gap:8px;margin-top:12px;">
+          <button style="flex:1;height:38px;border-radius:8px;border:1px solid #ddd;background:#fff;" onclick="clearSig()">다시 쓰기</button>
+          <button style="flex:1;height:38px;border-radius:8px;border:none;background:#0B1F3E;color:#fff;" onclick="confirmSig()">확인</button>
+        </div>
+        <div id="sig-confirmed" style="display:none;text-align:center;font-size:13px;color:#2B2118;padding:16px 0;">서명이 등록되었습니다.</div>
+      </div>
+    </div>`;
+  setupSignatureCanvas();
+}
+function closeSignature(){
+  document.getElementById('sig-modal-root').innerHTML='';
+  const agreement = getAgreement();
+  if(agreement && agreement.signed) openGuidebookSheet('agreement');
+}
+let sigCtx, sigDrawing=false, sigHas=false;
+function setupSignatureCanvas(){
+  const canvas = document.getElementById('sigcanvas');
+  sigCtx = canvas.getContext('2d');
+  sigCtx.strokeStyle="#2B2118"; sigCtx.lineWidth=2; sigCtx.lineCap="round";
+  function pos(e){ const r=canvas.getBoundingClientRect(); const p = e.touches? e.touches[0]: e;
+    return {x:(p.clientX-r.left)*canvas.width/r.width, y:(p.clientY-r.top)*canvas.height/r.height}; }
+  function start(e){ sigDrawing=true; sigHas=true; const p=pos(e); sigCtx.beginPath(); sigCtx.moveTo(p.x,p.y); e.preventDefault(); }
+  function move(e){ if(!sigDrawing) return; const p=pos(e); sigCtx.lineTo(p.x,p.y); sigCtx.stroke(); e.preventDefault(); }
+  function end(){ sigDrawing=false; }
+  canvas.addEventListener('mousedown',start); canvas.addEventListener('mousemove',move); window.addEventListener('mouseup',end);
+  canvas.addEventListener('touchstart',start); canvas.addEventListener('touchmove',move); canvas.addEventListener('touchend',end);
+}
+function clearSig(){ sigCtx.clearRect(0,0,300,120); sigHas=false; }
+function confirmSig(){
+  if(!sigHas) return;
+  const canvas = document.getElementById('sigcanvas');
+  saveAgreement(canvas.toDataURL());
+  document.querySelector('.modal-box canvas').style.display='none';
+  document.querySelectorAll('.modal-box button').forEach(b=>b.style.display='none');
+  document.getElementById('sig-confirmed').style.display='block';
+  setTimeout(closeSignature, 900);
+}
+
+function pageSchedule(){
+  const scheduleData = getSchedule();
+  const days = Array.from({length:30},(_,i)=>i+1);
+  const campDays = {11:"DAY 1",12:"DAY 2",13:"DAY 3"};
+  const active = scheduleData.find(s=>s.day===scheduleActiveDay);
+  render(`
+    ${header('일정',{back:true})}
+    <div class="list-page-title"><div class="kicker">ROYAL CAMP SCHEDULE</div><div class="serif title">June 2026</div></div>
+    <div style="padding:0 16px;">
+      <div style="display:grid;grid-template-columns:repeat(7,1fr);text-align:center;font-size:9px;color:#a9bbd6;margin-bottom:4px;">
+        ${['MON','TUE','WED','THU','FRI','SAT','SUN'].map(w=>`<span>${w}</span>`).join('')}
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:4px;">
+        ${days.map(d=>`<div style="height:34px;display:flex;align-items:center;justify-content:center;border-radius:8px;font-size:11px;${campDays[d]?'background:#C9A961;color:#0B1F3E;font-weight:600;':'color:#d7e0ef;'}">${d}</div>`).join('')}
+      </div>
+    </div>
+    <div style="display:flex;margin-top:20px;border-top:1px solid #1F3A63;">
+      ${scheduleData.map(s=>`<button onclick="scheduleActiveDay='${s.day}';pageSchedule()" style="flex:1;background:none;border:none;padding:12px 0;font-size:11px;cursor:pointer;color:${scheduleActiveDay===s.day?'#C9A961':'#a9bbd6'};border-bottom:2px solid ${scheduleActiveDay===s.day?'#C9A961':'transparent'};">${s.day}<br/><span style="font-size:9px;">${s.date}</span></button>`).join('')}
+    </div>
+    <div style="padding:18px;">
+      ${active.items.map(it=>`<div style="display:flex;gap:12px;margin-bottom:14px;"><span style="color:#C9A961;font-size:11px;width:44px;flex-shrink:0;">${it.time}</span><div><div style="font-size:12.5px;">${it.a}</div><div style="font-size:10.5px;color:#a9bbd6;">${it.l}</div></div></div>`).join('')}
+    </div>
+  `);
+}
+
+function pageMaterials(){
+  render(`
+    ${header('캠프 자료',{back:true})}
+    <div class="list-page-title"><div class="kicker">CAMP MATERIALS</div><div class="serif title">Documents</div></div>
+    ${getMaterials().map(m=>`<button class="list-item" onclick="go('#/materials/${m.id}')"><div style="display:flex;gap:10px;align-items:center;"><span style="color:#C9A961;font-size:11px;width:32px;">${m.type}</span><div><div class="t">${m.title}</div><div class="s">${m.meta}</div></div></div><span class="chev">&#8250;</span></button>`).join('')}
+  `);
+}
+function pageMaterialDetail(id){
+  const m = getMaterials().find(x=>x.id===id);
+  render(`
+    ${header('문서 미리보기',{back:true,backTo:'#/materials'})}
+    <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;padding:60px 20px;gap:10px;">
+      <span style="color:#C9A961;font-size:32px;">${m.type==='PDF'?'&#9636;':'&#9671;'}</span>
+      <div style="font-size:14px;text-align:center;">${m.title}</div>
+      <div style="font-size:11px;color:#a9bbd6;">${m.meta}</div>
+    </div>
+    <div style="text-align:center;padding:16px;border-top:1px solid #1F3A63;color:#a9bbd6;font-size:12px;">1 / 1 &nbsp; &#8722; 100% ＋</div>
+  `);
+}
+
+function pageNoticeList(openId){
+  const notices = getNotices();
+  render(`
+    ${header('공지사항',{back:true})}
+    <div class="list-page-title"><div class="kicker">OFFICIAL NOTICE</div><div class="serif title">Notice</div></div>
+    ${notices.map(n=>`<button class="list-item" onclick="go('#/notice/${n.id}')"><div><div class="t">${n.title}</div><div class="s">${n.date} &middot; ${n.dept}</div></div><span class="chev">&#8250;</span></button>`).join('')}
+    <div id="sheet-root"></div>
+  `);
+  if(openId) openNoticeSheet(openId);
+}
+function openNoticeSheet(id){
+  const n = getNotices().find(x=>x.id===id);
+  if(!n) return;
+  document.getElementById('sheet-root').innerHTML = `
+    <div class="sheet-overlay" onclick="if(event.target===this) closeNoticeSheet()">
+      <div class="app-frame">
+        <div class="sheet-card">
+          <button class="sheet-close" onclick="closeNoticeSheet()">&#10005;</button>
+          <div class="sheet-kicker">${n.date} &middot; ${n.dept}</div>
+          <div class="sheet-title">${n.title}</div>
+          <div style="font-size:13px;line-height:1.8;">${n.body}</div>
+        </div>
+      </div>
+    </div>
+  `;
+}
+function closeNoticeSheet(){
+  document.getElementById('sheet-root').innerHTML = '';
+  go('#/notice');
+}
+function pageNoticeDetail(id){
+  pageNoticeList(id);
+}
+
+let qnaCat = "전체", qnaOpen = null;
+function pageQna(){
+  const cats = ["전체","생활","프로그램","시설","복장"];
+  const filtered = qnaCat==="전체" ? QNA : QNA.filter(q=>q.cat===qnaCat);
+  render(`
+    ${header('Q&A',{back:true})}
+    <div class="list-page-title"><div class="kicker">CAMP Q&amp;A</div><div class="serif title">Frequently Asked</div>
+    <div style="font-size:11.5px;color:#a9bbd6;margin-top:8px;">캠프 참가 중 자주 묻는 질문을 확인할 수 있습니다.</div></div>
+    <div style="display:flex;gap:8px;padding:0 20px 12px;overflow-x:auto;">
+      ${cats.map(c=>`<button onclick="qnaCat='${c}';pageQna()" style="padding:6px 12px;border-radius:999px;font-size:11px;flex-shrink:0;border:1px solid #1F3A63;cursor:pointer;background:${qnaCat===c?'#C9A961':'transparent'};color:${qnaCat===c?'#0B1F3E':'#a9bbd6'};">${c}</button>`).join('')}
+    </div>
+    <div style="padding:0 20px;">
+      ${filtered.map((q,i)=>`
+        <div style="border-top:1px solid #1F3A63;padding:12px 0;">
+          <button onclick="qnaOpen=qnaOpen===${i}?null:${i};pageQna()" style="width:100%;background:none;border:none;color:#fff;text-align:left;display:flex;justify-content:space-between;cursor:pointer;">
+            <span style="font-size:12.5px;flex:1;padding-right:8px;"><span style="color:#C9A961;font-size:10px;margin-right:4px;">${q.cat}</span>${q.q}</span>
+            <span style="color:#a9bbd6;">${qnaOpen===i?'&#9652;':'&#9662;'}</span>
+          </button>
+          ${qnaOpen===i? `<div style="font-size:11.5px;color:#c7d3e6;line-height:1.7;margin-top:8px;">${q.a}</div>`:''}
+        </div>`).join('')}
+    </div>
+    <div style="padding:24px 20px;border-top:1px solid #1F3A63;text-align:center;">
+      <div style="font-size:12px;margin-bottom:10px;">찾는 답변이 없나요?</div>
+      <button class="btn-gold" style="margin-top:0;">질문 보내기</button>
+    </div>
+  `);
+}
+
+let surveyRating=0, surveyChoice="", surveySubmitted=false;
+function pageSurvey(){
+  const programs=["큐레이터 오리엔테이션","작품 감상 및 자유 관람","도슨트 프로그램","그룹 토론"];
+  render(`
+    ${header('설문조사',{back:true})}
+    <div class="list-page-title"><div class="kicker">ROYAL CAMP SURVEY</div><div class="serif title">Program Survey</div></div>
+    <div style="margin:0 16px;background:#122A50;border-radius:16px;padding:16px;">
+      <div style="display:flex;justify-content:space-between;font-size:10px;margin-bottom:10px;"><span style="color:#C9A961;">진행 중 &middot; DAY 2</span><span style="color:#a9bbd6;">2/3</span></div>
+      <div style="font-size:13px;margin-bottom:14px;">갤러리 클래스 만족도 조사</div>
+      ${surveySubmitted ? `<div style="text-align:center;color:#C9A961;font-size:12.5px;padding:20px 0;">설문이 제출되었습니다.</div>` : `
+      <div style="font-size:11.5px;color:#c7d3e6;margin-bottom:8px;">1. 오늘 갤러리 클래스는 전반적으로 만족스러웠나요?</div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+        <span style="font-size:9px;color:#a9bbd6;">아쉬움</span>
+        ${[1,2,3,4,5].map(n=>`<button onclick="surveyRating=${n};pageSurvey()" style="width:30px;height:30px;border-radius:50%;font-size:11px;cursor:pointer;border:1px solid #1F3A63;background:${surveyRating===n?'#C9A961':'transparent'};color:${surveyRating===n?'#0B1F3E':'#a9bbd6'};">${n}</button>`).join('')}
+        <span style="font-size:9px;color:#a9bbd6;">매우 만족</span>
+      </div>
+      <div style="font-size:11.5px;color:#c7d3e6;margin-bottom:8px;">2. 가장 인상 깊었던 프로그램을 선택해 주세요.</div>
+      <div style="margin-bottom:16px;">
+        ${programs.map(p=>`<label style="display:flex;align-items:center;gap:8px;font-size:12px;margin-bottom:8px;"><input type="radio" name="prog" ${surveyChoice===p?'checked':''} onclick="surveyChoice='${p}'"> ${p}</label>`).join('')}
+      </div>
+      <button class="btn-gold" onclick="surveySubmitted=true;pageSurvey()">설문 제출</button>
+      `}
+    </div>
+    <div style="margin:16px;background:#122A50;border-radius:16px;padding:16px;opacity:0.6;">
+      <div style="font-size:10px;color:#a9bbd6;">예정 &middot; DAY 3</div>
+      <div style="font-size:13px;margin-top:4px;">로열캠프 종합 만족도 조사</div>
+      <div style="font-size:10.5px;color:#a9bbd6;margin-top:6px;">캠프 종료 후 전체 프로그램에 대한 설문이 열립니다.</div>
+      <div style="font-size:10px;color:#C9A961;margin-top:8px;">JUN 13 &middot; 17:30 OPEN</div>
+    </div>
+  `);
+}
+
+function pageNotifications(){
+  render(`
+    ${header('알림',{back:true})}
+    <div class="list-page-title"><div class="kicker">NOTIFICATIONS</div><div class="serif title">알림</div></div>
+    ${NOTIFICATIONS.map(n=>`<div style="padding:14px 20px;border-top:1px solid #1F3A63;"><div style="font-size:12.5px;">${n.t}</div><div style="font-size:10.5px;color:#a9bbd6;margin-top:4px;">${n.m}</div></div>`).join('')}
+  `);
+}
+
+// ---------------- PAGES: ADMIN ----------------
+function adminWrap(inner){
+  app.className = "app admin-app";
+  render(inner);
+}
+function studentWrap(){ app.className = "app"; }
+
+function pageAdminHome(){
+  adminWrap(`
+    <div class="admin-header"><span class="serif" style="font-size:13px;">ROYAL CAMP ADMIN</span></div>
+    <div style="padding:20px 20px 0;">
+      <div class="serif" style="font-size:26px;">ROYAL CAMP ADMIN</div>
+      <div style="font-size:10px;color:#999;letter-spacing:1.5px;margin-top:4px;">CHEONGDAM INTERNATIONAL HIGH SCHOOL</div>
+    </div>
+    <div style="padding:20px 20px 0;">
+      <button class="admin-menu-row" onclick="go('#/admin/attendance')"><div style="display:flex;gap:14px;align-items:center;"><span style="color:#ccc;">01</span><div><div style="font-size:13px;font-weight:600;">ATTENDANCE</div><div style="font-size:11px;color:#999;">출석 관리</div></div></div><span style="color:#ccc;">&#8250;</span></button>
+      <button class="admin-menu-row" onclick="go('#/admin/evaluation')"><div style="display:flex;gap:14px;align-items:center;"><span style="color:#ccc;">02</span><div><div style="font-size:13px;font-weight:600;">EVALUATION</div><div style="font-size:11px;color:#999;">멘토 평가</div></div></div><span style="color:#ccc;">&#8250;</span></button>
+      <button class="admin-menu-row" onclick="go('#/admin/scoreboard')"><div style="display:flex;gap:14px;align-items:center;"><span style="color:#ccc;">03</span><div><div style="font-size:13px;font-weight:600;">SCOREBOARD</div><div style="font-size:11px;color:#999;">점수 현황</div></div></div><span style="color:#ccc;">&#8250;</span></button>
+      <button class="admin-menu-row" onclick="go('#/admin/participants')"><div style="display:flex;gap:14px;align-items:center;"><span style="color:#ccc;">04</span><div><div style="font-size:13px;font-weight:600;">PARTICIPANTS</div><div style="font-size:11px;color:#999;">참가자 관리</div></div></div><span style="color:#ccc;">&#8250;</span></button>
+      <button class="admin-menu-row" onclick="go('#/admin/notices')"><div style="display:flex;gap:14px;align-items:center;"><span style="color:#ccc;">05</span><div><div style="font-size:13px;font-weight:600;">NOTICE</div><div style="font-size:11px;color:#999;">공지사항 관리</div></div></div><span style="color:#ccc;">&#8250;</span></button>
+      <button class="admin-menu-row" onclick="go('#/admin/guidebook')"><div style="display:flex;gap:14px;align-items:center;"><span style="color:#ccc;">06</span><div><div style="font-size:13px;font-weight:600;">GUIDEBOOK</div><div style="font-size:11px;color:#999;">가이드북 관리</div></div></div><span style="color:#ccc;">&#8250;</span></button>
+      <button class="admin-menu-row" onclick="go('#/admin/schedule')"><div style="display:flex;gap:14px;align-items:center;"><span style="color:#ccc;">07</span><div><div style="font-size:13px;font-weight:600;">SCHEDULE</div><div style="font-size:11px;color:#999;">일정 관리</div></div></div><span style="color:#ccc;">&#8250;</span></button>
+      <button class="admin-menu-row" onclick="go('#/admin/materials')"><div style="display:flex;gap:14px;align-items:center;"><span style="color:#ccc;">08</span><div><div style="font-size:13px;font-weight:600;">MATERIALS</div><div style="font-size:11px;color:#999;">캠프자료 관리</div></div></div><span style="color:#ccc;">&#8250;</span></button>
+      <button class="admin-menu-row" onclick="go('#/admin/today')"><div style="display:flex;gap:14px;align-items:center;"><span style="color:#ccc;">09</span><div><div style="font-size:13px;font-weight:600;">TODAY CARD</div><div style="font-size:11px;color:#999;">홈 화면 오늘 카드 관리</div></div></div><span style="color:#ccc;">&#8250;</span></button>
+    </div>
+    <div style="text-align:center;padding:16px;"><button onclick="go('#/home')" style="background:none;border:none;color:#bbb;font-size:11px;cursor:pointer;">&#8592; 학생 화면으로 돌아가기</button></div>
+  `);
+}
+
+function adminProgramHeader(active){
+  const tabs = [["attendance","출석 현황"],["evaluation","평가 관리"],["scoreboard","점수 현황"]];
+  return `
+    <div class="admin-header">
+      <button class="back-btn" style="color:#999;" onclick="go('#/admin')">&#8249;</button>
+      <div><div class="serif" style="font-size:13px;">ROYAL CAMP ADMIN</div><div style="font-size:10px;color:#999;margin-top:3px;">DEBATING PROGRAM</div><div style="font-size:9.5px;color:#bbb;">DAY 02 &middot; ATTENDANCE &amp; SCORE</div></div>
+    </div>
+    <div class="admin-tabs">${tabs.map(([k,l])=>`<button class="admin-tab ${active===k?'active':''}" onclick="go('#/admin/${k}')">${l}</button>`).join('')}</div>
+  `;
+}
+
+function pageAdminAttendance(){
+  const absentees = PARTICIPANTS.filter(p=>pStates[p.id].attendance==="absent");
+  adminWrap(`
+    ${adminProgramHeader('attendance')}
+    <div style="padding:16px;">
+      <div class="absentee-banner"><span>ABSENTEE LIST 결석 명단</span><span style="font-size:16px;font-weight:700;">${String(absentees.length).padStart(2,'0')}</span></div>
+      ${absentees.map(p=>{
+        const s = pStates[p.id];
+        return `
+        <div class="att-card">
+          <div class="p-name">${p.name}</div>
+          <div class="p-meta">${p.school} &middot; ${p.type}</div>
+          <div class="vote-row">
+            <button class="vote-btn ${s.attendanceVote==='up'?'up-active':''}" onclick="voteAttendance('${p.id}','up')">&#128077;</button>
+            <button class="vote-btn ${s.attendanceVote==='down'?'down-active':''}" onclick="voteAttendance('${p.id}','down')">&#128078;</button>
+          </div>
+          ${s.attendanceVote==='down' ? `<div class="penalty-box">-10 POINTS<br/><span style="font-size:9.5px;">ABSENCE PENALTY</span></div>` : ''}
+        </div>`;
+      }).join('') || `<div style="text-align:center;color:#999;padding:40px 0;font-size:13px;">현재 결석자가 없습니다.</div>`}
+    </div>
+  `);
+}
+function voteAttendance(id,val){
+  const s = pStates[id];
+  s.attendanceVote = s.attendanceVote===val ? null : val;
+  saveStates();
+  pageAdminAttendance();
+}
+
+function pageAdminEvaluation(){
+  const p = PARTICIPANTS.find(x=>x.id===evalSelected);
+  const s = pStates[p.id];
+  adminWrap(`
+    ${adminProgramHeader('evaluation')}
+    <select onchange="evalSelected=this.value;pageAdminEvaluation()">
+      ${PARTICIPANTS.map(x=>`<option value="${x.id}" ${x.id===evalSelected?'selected':''}>${x.name} &middot; ${x.school}</option>`).join('')}
+    </select>
+    <div style="padding:16px;">
+      <div style="font-size:16px;font-weight:600;">${p.name}</div>
+      <div style="font-size:11px;color:#999;margin-bottom:16px;">${p.school} &middot; ${p.type}</div>
+      <div style="font-size:10px;color:#999;letter-spacing:1.5px;margin-bottom:4px;">DEBATING PROGRAM</div>
+      <div style="display:flex;justify-content:space-between;align-items:center;border:1px solid #f0f0f0;border-radius:8px;padding:10px 12px;margin-bottom:20px;">
+        <span style="font-size:12px;color:#666;">출석 상태</span>
+        <span style="font-size:11px;padding:2px 8px;border-radius:6px;${s.attendance==='absent'?'background:#FCEBEB;color:#B33A3A;':'color:#666;'}">${s.attendance==='absent'?'결석':'출석'}</span>
+      </div>
+      <div style="font-size:10px;color:#999;letter-spacing:1.5px;margin-bottom:8px;">MENTOR EVALUATION</div>
+      ${EVALUATORS.map(ev=>`
+        <div style="display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #f5f5f5;padding:10px 0;">
+          <span style="font-size:12px;">${ev}</span>
+          <div style="display:flex;gap:8px;">
+            <button class="vote-btn ${s.evaluatorVotes[ev]==='up'?'up-active':''}" style="width:34px;flex:none;" onclick="voteEval('${ev}','up')">&#128077;</button>
+            <button class="vote-btn ${s.evaluatorVotes[ev]==='down'?'down-active':''}" style="width:34px;flex:none;" onclick="voteEval('${ev}','down')">&#128078;</button>
+          </div>
+        </div>`).join('')}
+      <div style="font-size:10px;color:#999;letter-spacing:1.5px;margin-top:20px;">총 감점</div>
+      <div style="font-size:26px;color:#B33A3A;font-weight:700;">-${penalty(s)} POINTS</div>
+      <button style="width:100%;height:44px;border-radius:12px;background:#111;color:#fff;border:none;font-size:14px;margin-top:20px;">저장하기</button>
+    </div>
+  `);
+}
+function voteEval(evaluator,val){
+  const s = pStates[evalSelected];
+  s.evaluatorVotes[evaluator] = s.evaluatorVotes[evaluator]===val ? null : val;
+  saveStates();
+  pageAdminEvaluation();
+}
+
+function pageAdminScoreboard(){
+  const ranked = PARTICIPANTS.map(p=>({...p,score:getScore(p.id) - penalty(pStates[p.id])})).sort((a,b)=>b.score-a.score);
+  adminWrap(`
+    ${adminProgramHeader('scoreboard')}
+    <div style="padding:16px;">
+      <div style="display:flex;font-size:10px;color:#999;letter-spacing:1.5px;border-bottom:1px solid #f0f0f0;padding-bottom:8px;"><span style="width:40px;">RANK</span><span style="flex:1;">NAME</span><span>SCORE</span></div>
+      ${ranked.map((p,i)=>`<div style="display:flex;align-items:center;padding:10px 0;border-bottom:1px solid #f9f9f9;font-size:12.5px;"><span style="width:40px;color:#999;">${String(i+1).padStart(2,'0')}</span><span style="flex:1;">${p.name}</span><span style="font-weight:600;">${p.score}</span></div>`).join('')}
+    </div>
+  `);
+}
+
+let partQuery="", partFilter="전체";
+function pageAdminParticipants(){
+  const filters = ["전체","출석","결석","평가완료"];
+  const filtered = PARTICIPANTS.filter(p=>{
+    if(partQuery && !p.name.includes(partQuery) && !p.school.includes(partQuery)) return false;
+    const s = pStates[p.id];
+    if(partFilter==="출석") return s.attendance==="present";
+    if(partFilter==="결석") return s.attendance==="absent";
+    if(partFilter==="평가완료") return EVALUATORS.some(ev=>s.evaluatorVotes[ev]);
+    return true;
+  });
+  adminWrap(`
+    <div class="admin-header"><button class="back-btn" style="color:#999;" onclick="go('#/admin')">&#8249;</button><span class="serif" style="font-size:13px;">PARTICIPANTS</span></div>
+    <div style="padding:14px 16px 0;">
+      <div style="font-size:11px;color:#999;margin-bottom:8px;">총 ${PARTICIPANTS.length}명</div>
+      <div style="display:flex;gap:8px;margin-bottom:12px;">
+        <button onclick="go('#/admin/participants/scores')" style="flex:1;height:34px;border-radius:8px;border:1px solid #ddd;background:#fff;font-size:11.5px;">점수 관리</button>
+        <button onclick="go('#/admin/participants/absentees')" style="flex:1;height:34px;border-radius:8px;border:1px solid #ddd;background:#fff;font-size:11.5px;">결석자 명단 관리</button>
+      </div>
+      <input class="search" placeholder="이름 또는 학교 검색" value="${partQuery}" oninput="partQuery=this.value;pageAdminParticipants()" style="margin-bottom:10px;"/>
+      <div style="display:flex;gap:8px;margin-bottom:6px;">
+        ${filters.map(f=>`<button class="filter-btn ${partFilter===f?'active':''}" onclick="partFilter='${f}';pageAdminParticipants()">${f}</button>`).join('')}
+      </div>
+    </div>
+    <div>
+      ${filtered.map(p=>{
+        const s = pStates[p.id];
+        return `<div class="participant-row" onclick="go('#/admin/participants/${p.id}')">
+          <div><div class="p-name" style="font-weight:600;">${p.name}</div><div style="font-size:10.5px;color:#999;">${p.school} &middot; ${p.type}${p.note?` &middot; ${p.note}`:''}</div></div>
+          ${s.attendance==='absent' ? `<span class="abs-tag">결석</span>` : ''}
+        </div>`;
+      }).join('')}
+    </div>
+  `);
+}
+
+function pageAdminParticipantScores(){
+  adminWrap(`
+    <div class="admin-header"><button class="back-btn" style="color:#999;" onclick="go('#/admin/participants')">&#8249;</button><span class="serif" style="font-size:13px;">점수 관리</span></div>
+    <p style="font-size:11px;color:#999;padding:12px 16px 0;">여기서 수정한 점수는 출석관리 감점이 반영되기 전 기본 점수로, 점수 현황(SCOREBOARD)에 바로 반영됩니다.</p>
+    <div style="padding:8px 16px 16px;">
+      ${PARTICIPANTS.map(p=>`
+        <div style="display:flex;justify-content:space-between;align-items:center;border-top:1px solid #f5f5f5;padding:10px 0;">
+          <div><div style="font-size:12.5px;font-weight:600;">${p.name}</div><div style="font-size:10.5px;color:#999;">${p.school}</div></div>
+          <input type="number" value="${getScore(p.id)}" onchange="setScore('${p.id}', Number(this.value)); pageAdminParticipantScores()" style="width:64px;height:32px;border:1px solid #ddd;border-radius:8px;text-align:center;font-size:12.5px;"/>
+        </div>`).join('')}
+    </div>
+  `);
+}
+
+function pageAdminParticipantAbsentees(){
+  adminWrap(`
+    <div class="admin-header"><button class="back-btn" style="color:#999;" onclick="go('#/admin/participants')">&#8249;</button><span class="serif" style="font-size:13px;">결석자 명단 관리</span></div>
+    <p style="font-size:11px;color:#999;padding:12px 16px 0;">여기서 체크한 학생이 출석관리(ATTENDANCE)의 결석 명단에 반영됩니다.</p>
+    <div style="padding:8px 16px 16px;">
+      ${PARTICIPANTS.map(p=>{
+        const s = pStates[p.id];
+        return `
+        <label style="display:flex;justify-content:space-between;align-items:center;border-top:1px solid #f5f5f5;padding:10px 0;cursor:pointer;">
+          <div><div style="font-size:12.5px;font-weight:600;">${p.name}</div><div style="font-size:10.5px;color:#999;">${p.school}</div></div>
+          <input type="checkbox" ${s.attendance==='absent'?'checked':''} onchange="setAbsentee('${p.id}', this.checked)"/>
+        </label>`;
+      }).join('')}
+    </div>
+  `);
+}
+function setAbsentee(id, checked){
+  pStates[id].attendance = checked ? "absent" : "present";
+  saveStates();
+  pageAdminParticipantAbsentees();
+}
+
+function pageAdminParticipantDetail(id){
+  const p = PARTICIPANTS.find(x=>x.id===id);
+  if(!p) return pageAdminParticipants();
+  const s = pStates[p.id];
+  adminWrap(`
+    <div class="admin-header"><button class="back-btn" style="color:#999;" onclick="go('#/admin/participants')">&#8249;</button><span class="serif" style="font-size:13px;">PARTICIPANT DETAIL</span></div>
+    <div style="padding:20px;">
+      <div style="font-size:20px;font-weight:700;">${p.name}</div>
+      <div style="font-size:11px;color:#999;margin-bottom:20px;">${p.school} &middot; ${p.type}${p.note?` &middot; ${p.note}`:''}</div>
+      <div style="font-size:10px;color:#999;letter-spacing:1.5px;margin-bottom:8px;">PROGRAM ATTENDANCE</div>
+      <button onclick="toggleAttendance('${p.id}')" style="width:100%;display:flex;justify-content:space-between;align-items:center;border:1px solid #f0f0f0;border-radius:8px;padding:10px 12px;margin-bottom:20px;background:#fff;">
+        <span style="font-size:12px;color:#666;">Debating Program</span>
+        <span style="font-size:11px;padding:2px 8px;border-radius:6px;${s.attendance==='absent'?'background:#FCEBEB;color:#B33A3A;':'color:#666;'}">${s.attendance==='absent'?'결석':'출석'}</span>
+      </button>
+      <div style="font-size:10px;color:#999;letter-spacing:1.5px;margin-bottom:8px;">MENTOR EVALUATION</div>
+      ${EVALUATORS.map(ev=>`
+        <div style="display:flex;justify-content:space-between;align-items:center;border:1px solid #f0f0f0;border-radius:8px;padding:10px 12px;margin-bottom:8px;">
+          <span style="font-size:12px;">${ev}</span>
+          <span style="font-size:12px;${s.evaluatorVotes[ev]==='down'?'color:#B33A3A;':'color:#999;'}">${s.evaluatorVotes[ev]==='down'?'-10':s.evaluatorVotes[ev]==='up'?'\ud83d\udc4d':'미평가'}</span>
+        </div>`).join('')}
+      <div style="font-size:10px;color:#999;letter-spacing:1.5px;margin-top:16px;">TOTAL PENALTY</div>
+      <div style="font-size:30px;color:#B33A3A;font-weight:700;margin-bottom:20px;">-${penalty(s)} POINTS</div>
+      <button onclick="go('#/admin/participants')" style="width:100%;height:44px;border-radius:12px;background:#111;color:#fff;border:none;font-size:14px;">확인</button>
+    </div>
+  `);
+}
+function toggleAttendance(id){
+  const s = pStates[id];
+  s.attendance = s.attendance==='absent' ? 'present' : 'absent';
+  saveStates();
+  pageAdminParticipantDetail(id);
+}
+
+// ---------------- ADMIN CONTENT MANAGEMENT ----------------
+function adminSubHeader(title, backTo){
+  return `<div class="admin-header"><button class="back-btn" style="color:#999;" onclick="go('${backTo||'#/admin'}')">&#8249;</button><span class="serif" style="font-size:13px;">${title}</span></div>`;
+}
+
+function pageAdminNotices(){
+  const notices = getNotices();
+  adminWrap(`
+    ${adminSubHeader('공지사항 관리')}
+    <div style="padding:16px;">
+      <div style="border:1px solid #f0f0f0;border-radius:10px;padding:12px;margin-bottom:16px;">
+        <input id="n-title" class="search" placeholder="제목" style="margin-bottom:8px;"/>
+        <input id="n-dept" class="search" placeholder="담당 부서 (예: 운영본부)" style="margin-bottom:8px;"/>
+        <textarea id="n-body" placeholder="내용" style="width:100%;height:70px;border:1px solid #ddd;border-radius:8px;padding:8px;font-size:12.5px;margin-bottom:8px;"></textarea>
+        <button onclick="addNotice()" style="width:100%;height:36px;border-radius:8px;background:#111;color:#fff;border:none;font-size:12.5px;">공지 등록</button>
+      </div>
+      ${notices.map(n=>`
+        <div style="border-top:1px solid #f0f0f0;padding:10px 0;display:flex;justify-content:space-between;gap:8px;">
+          <div><div style="font-size:12.5px;font-weight:600;">${n.title}</div><div style="font-size:10.5px;color:#999;">${n.date} &middot; ${n.dept}</div></div>
+          <button onclick="removeNotice('${n.id}')" style="background:none;border:none;color:#B33A3A;font-size:11px;">삭제</button>
+        </div>`).join('')}
+    </div>
+  `);
+}
+function addNotice(){
+  const title = document.getElementById('n-title').value.trim();
+  const dept = document.getElementById('n-dept').value.trim() || "운영본부";
+  const body = document.getElementById('n-body').value.trim();
+  if(!title || !body) return;
+  const notices = getNotices();
+  notices.unshift({ id:'n'+Date.now(), title, dept, body, date:new Date().toISOString().slice(0,10).replace(/-/g,'.') });
+  noticeStore.set(notices);
+  pageAdminNotices();
+}
+function removeNotice(id){
+  noticeStore.set(getNotices().filter(n=>n.id!==id));
+  pageAdminNotices();
+}
+
+function pageAdminGuidebook(){
+  const gb = getGuidebook();
+  adminWrap(`
+    ${adminSubHeader('가이드북 관리')}
+    <div style="padding:16px;">
+      ${gb.map((g,i)=>`
+        <div style="border:1px solid #f0f0f0;border-radius:10px;padding:12px;margin-bottom:10px;">
+          <div style="font-size:12px;font-weight:600;margin-bottom:6px;">${g.no} &middot; ${g.title}</div>
+          <textarea id="gb-${i}" style="width:100%;height:80px;border:1px solid #ddd;border-radius:8px;padding:8px;font-size:12px;">${g.body}</textarea>
+          <button onclick="saveGuidebookItem(${i})" style="margin-top:6px;height:32px;padding:0 14px;border-radius:8px;background:#111;color:#fff;border:none;font-size:11.5px;">저장</button>
+        </div>`).join('')}
+    </div>
+  `);
+}
+function saveGuidebookItem(i){
+  const gb = getGuidebook();
+  gb[i].body = document.getElementById('gb-'+i).value;
+  guidebookStore.set(gb);
+  alert('저장되었습니다.');
+}
+
+function pageAdminScheduleManage(){
+  const days = getSchedule();
+  adminWrap(`
+    ${adminSubHeader('일정 관리')}
+    <div style="padding:16px;">
+      ${days.map((d,di)=>`
+        <div style="border:1px solid #f0f0f0;border-radius:10px;padding:12px;margin-bottom:12px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+            <div style="display:flex;gap:6px;">
+              <input class="search" style="width:80px;font-weight:600;" value="${d.day}" onchange="updateScheduleDayMeta(${di},'day',this.value)"/>
+              <input class="search" style="width:80px;" value="${d.date}" onchange="updateScheduleDayMeta(${di},'date',this.value)"/>
+            </div>
+            <button onclick="removeScheduleDay(${di})" style="background:none;border:none;color:#B33A3A;font-size:11px;">일차 삭제</button>
+          </div>
+          ${d.items.map((it,ii)=>`
+            <div style="display:flex;gap:6px;margin-bottom:6px;">
+              <input class="search" style="width:60px;" value="${it.time}" onchange="updateScheduleItem(${di},${ii},'time',this.value)"/>
+              <input class="search" style="flex:1;" value="${it.a}" onchange="updateScheduleItem(${di},${ii},'a',this.value)"/>
+              <input class="search" style="flex:1;" value="${it.l}" onchange="updateScheduleItem(${di},${ii},'l',this.value)"/>
+              <button onclick="removeScheduleItem(${di},${ii})" style="background:none;border:none;color:#B33A3A;font-size:13px;">&#10005;</button>
+            </div>`).join('')}
+          <button onclick="addScheduleItem(${di})" style="margin-top:4px;background:none;border:none;color:#666;font-size:11px;">+ 세부일정 추가</button>
+        </div>`).join('')}
+      <p style="font-size:11px;color:#999;margin-bottom:12px;">시간/활동/장소 칸을 수정하면 자동 저장됩니다.</p>
+      <button onclick="addScheduleDay()" style="width:100%;height:44px;border-radius:12px;border:1px dashed #ccc;background:#fafafa;font-size:13px;color:#666;">+ DAY 추가</button>
+    </div>
+  `);
+}
+function updateScheduleItem(di,ii,field,value){
+  const days = getSchedule();
+  days[di].items[ii][field] = value;
+  scheduleStore.set(days);
+}
+function updateScheduleDayMeta(di,field,value){
+  const days = getSchedule();
+  days[di][field] = value;
+  scheduleStore.set(days);
+  pageAdminScheduleManage();
+}
+function addScheduleItem(di){
+  const days = getSchedule();
+  days[di].items.push({ time:"09:00", a:"", l:"" });
+  scheduleStore.set(days);
+  pageAdminScheduleManage();
+}
+function removeScheduleItem(di,ii){
+  const days = getSchedule();
+  days[di].items.splice(ii,1);
+  scheduleStore.set(days);
+  pageAdminScheduleManage();
+}
+function addScheduleDay(){
+  const days = getSchedule();
+  days.push({ day:`DAY ${days.length+1}`, date:"", items:[] });
+  scheduleStore.set(days);
+  pageAdminScheduleManage();
+}
+function removeScheduleDay(di){
+  const days = getSchedule();
+  days.splice(di,1);
+  scheduleStore.set(days);
+  pageAdminScheduleManage();
+}
+
+function pageAdminMaterials(){
+  const materials = getMaterials();
+  adminWrap(`
+    ${adminSubHeader('캠프자료 관리')}
+    <div style="padding:16px;">
+      <div style="border:1px solid #f0f0f0;border-radius:10px;padding:12px;margin-bottom:16px;">
+        <input id="m-title" class="search" placeholder="자료 제목" style="margin-bottom:8px;"/>
+        <input id="m-meta" class="search" placeholder="설명 (예: DAY 2 · 4 PAGES)" style="margin-bottom:8px;"/>
+        <button onclick="addMaterial()" style="width:100%;height:36px;border-radius:8px;background:#111;color:#fff;border:none;font-size:12.5px;">자료 등록</button>
+      </div>
+      ${materials.map(m=>`
+        <div style="border-top:1px solid #f0f0f0;padding:10px 0;display:flex;justify-content:space-between;gap:8px;">
+          <div><div style="font-size:12.5px;font-weight:600;">${m.title}</div><div style="font-size:10.5px;color:#999;">${m.meta}</div></div>
+          <button onclick="removeMaterial('${m.id}')" style="background:none;border:none;color:#B33A3A;font-size:11px;">삭제</button>
+        </div>`).join('')}
+    </div>
+  `);
+}
+function addMaterial(){
+  const title = document.getElementById('m-title').value.trim();
+  const meta = document.getElementById('m-meta').value.trim();
+  if(!title) return;
+  const materials = getMaterials();
+  materials.push({ id:'m'+Date.now(), type:'PDF', title, meta });
+  materialsStore.set(materials);
+  pageAdminMaterials();
+}
+function removeMaterial(id){
+  materialsStore.set(getMaterials().filter(m=>m.id!==id));
+  pageAdminMaterials();
+}
+
+function pageAdminToday(){
+  const tc = getTodayCard();
+  adminWrap(`
+    ${adminSubHeader('홈 화면 오늘 카드 관리')}
+    <div style="padding:16px;">
+      <label style="font-size:11px;color:#999;display:block;margin-bottom:4px;">일차 라벨 (예: DAY 2)</label>
+      <input id="tc-day" class="search" value="${tc.dayLabel}" style="margin-bottom:10px;"/>
+      <label style="font-size:11px;color:#999;display:block;margin-bottom:4px;">날짜 (예: JUN 12)</label>
+      <input id="tc-date" class="search" value="${tc.date}" style="margin-bottom:10px;"/>
+      <label style="font-size:11px;color:#999;display:block;margin-bottom:4px;">안내 문구</label>
+      <textarea id="tc-desc" style="width:100%;height:80px;border:1px solid #ddd;border-radius:8px;padding:8px;font-size:12.5px;margin-bottom:12px;">${tc.desc}</textarea>
+      <button onclick="saveTodayCard()" style="width:100%;height:40px;border-radius:10px;background:#111;color:#fff;border:none;font-size:13px;">저장</button>
+    </div>
+  `);
+}
+function saveTodayCard(){
+  setTodayCard({
+    dayLabel: document.getElementById('tc-day').value.trim(),
+    date: document.getElementById('tc-date').value.trim(),
+    desc: document.getElementById('tc-desc').value,
+  });
+  alert('저장되었습니다. 홈 화면에 바로 반영됩니다.');
+}
+
+// ---------------- ROUTER ----------------
+function router(){
+  const hash = location.hash || '#/home';
+  const parts = hash.replace('#/','').split('/');
+  studentWrap();
+  if(parts[0]==='home' || hash==='#/' ) return pageHome();
+  if(parts[0]==='guidebook') return parts[1] ? pageGuidebookDetail(parts[1]) : pageGuidebookList();
+  if(parts[0]==='schedule') return pageSchedule();
+  if(parts[0]==='materials') return parts[1] ? pageMaterialDetail(parts[1]) : pageMaterials();
+  if(parts[0]==='notice') return parts[1] ? pageNoticeDetail(parts[1]) : pageNoticeList();
+  if(parts[0]==='qna') return pageQna();
+  if(parts[0]==='survey') return pageSurvey();
+  if(parts[0]==='notifications') return pageNotifications();
+  if(parts[0]==='admin'){
+    if(parts[1]==='attendance') return pageAdminAttendance();
+    if(parts[1]==='evaluation') return pageAdminEvaluation();
+    if(parts[1]==='scoreboard') return pageAdminScoreboard();
+    if(parts[1]==='participants'){
+      if(parts[2]==='scores') return pageAdminParticipantScores();
+      if(parts[2]==='absentees') return pageAdminParticipantAbsentees();
+      return parts[2] ? pageAdminParticipantDetail(parts[2]) : pageAdminParticipants();
+    }
+    if(parts[1]==='notices') return pageAdminNotices();
+    if(parts[1]==='guidebook') return pageAdminGuidebook();
+    if(parts[1]==='schedule') return pageAdminScheduleManage();
+    if(parts[1]==='materials') return pageAdminMaterials();
+    if(parts[1]==='today') return pageAdminToday();
+    return pageAdminHome();
+  }
+  return pageHome();
+}
+window.addEventListener('hashchange', router);
+router();
+</script>
+</body>
+</html>
