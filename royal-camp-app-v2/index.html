@@ -79,9 +79,23 @@
   .sheet-title { font-size:19px; font-weight:700; margin:6px 0 14px; }
   .sheet-hr { border:none; border-top:1px solid #E3D9C7; margin:14px 0; }
   .sheet-section-title { font-size:11px; font-weight:700; letter-spacing:0.5px; margin-bottom:6px; }
+  .splash-screen { position:fixed; inset:0; z-index:200; background:#0B1F3E; display:flex; flex-direction:column; align-items:center; justify-content:center; transition:opacity .5s ease; }
+  .splash-screen.hide { opacity:0; pointer-events:none; }
+  .splash-screen .crest { padding:0; }
+  .splash-screen .school-name { color:#fff; font-size:15px; margin-top:16px; text-align:center; line-height:1.6; }
+  .splash-screen .app-name { color:#C9A961; font-size:12px; margin-top:8px; letter-spacing:1px; }
 </style>
 </head>
 <body>
+<div id="splash" class="splash-screen">
+  <div class="crest">
+    <span style="color:#C9A961;font-size:20px;margin-bottom:4px;">&#9819;</span>
+    <div class="crest-badge"><span class="serif" style="color:#C9A961;font-weight:700;font-size:24px;">RC</span></div>
+    <div class="serif crest-title">ROYAL CAMP</div>
+  </div>
+  <div class="school-name">청담국제고등학교<br/>로열캠프</div>
+  <div class="app-name">로열캠프 알리미</div>
+</div>
 <div id="app" class="app"></div>
 
 <script>
@@ -968,6 +982,10 @@ function router(){
 }
 window.addEventListener('hashchange', router);
 router();
+
+const splash = document.getElementById('splash');
+setTimeout(() => splash.classList.add('hide'), 1200);
+setTimeout(() => splash.remove(), 1700);
 </script>
 </body>
 </html>
