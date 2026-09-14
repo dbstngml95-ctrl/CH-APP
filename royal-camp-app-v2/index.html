@@ -183,10 +183,18 @@ const noticeStore = makeStore("rc2_notices", NOTICES);
 const guidebookStore = makeStore("rc2_guidebook", GUIDEBOOK);
 const scheduleStore = makeStore("rc2_schedule", SCHEDULE);
 const materialsStore = makeStore("rc2_materials", MATERIALS);
+const campDaysStore = makeStore("rc2_camp_days", []);
 function getNotices(){ return noticeStore.get(); }
 function getGuidebook(){ return guidebookStore.get(); }
 function getSchedule(){ return scheduleStore.get(); }
 function getMaterials(){ return materialsStore.get(); }
+function getCampDays(){ return campDaysStore.get(); }
+function toggleCampDay(d){
+  const days = getCampDays();
+  const i = days.indexOf(d);
+  if(i===-1) days.push(d); else days.splice(i,1);
+  campDaysStore.set(days);
+}
 
 const scoreStore = makeStore("rc2_participant_scores", Object.fromEntries(PARTICIPANTS.map(p=>[p.id, p.baseScore])));
 function getScores(){ return scoreStore.get(); }
@@ -402,7 +410,7 @@ function confirmSig(){
 function pageSchedule(){
   const scheduleData = getSchedule();
   const days = Array.from({length:30},(_,i)=>i+1);
-  const campDays = {11:"DAY 1",12:"DAY 2",13:"DAY 3"};
+  const campDays = getCampDays();
   const active = scheduleData.find(s=>s.day===scheduleActiveDay);
   render(`
     ${header('일정',{back:true})}
@@ -412,7 +420,7 @@ function pageSchedule(){
         ${['MON','TUE','WED','THU','FRI','SAT','SUN'].map(w=>`<span>${w}</span>`).join('')}
       </div>
       <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:4px;">
-        ${days.map(d=>`<div style="height:34px;display:flex;align-items:center;justify-content:center;border-radius:8px;font-size:11px;${campDays[d]?'background:#C9A961;color:#0B1F3E;font-weight:600;':'color:#d7e0ef;'}">${d}</div>`).join('')}
+        ${days.map(d=>`<div style="height:34px;display:flex;align-items:center;justify-content:center;border-radius:8px;font-size:11px;${campDays.includes(d)?'background:#C9A961;color:#0B1F3E;font-weight:600;':'color:#d7e0ef;'}">${d}</div>`).join('')}
       </div>
     </div>
     <div style="display:flex;margin-top:20px;border-top:1px solid #1F3A63;">
@@ -831,9 +839,16 @@ function saveGuidebookItem(i){
 
 function pageAdminScheduleManage(){
   const days = getSchedule();
+  const campDays = getCampDays();
+  const monthDays = Array.from({length:30},(_,i)=>i+1);
   adminWrap(`
     ${adminSubHeader('일정 관리')}
     <div style="padding:16px;">
+      <p style="font-size:12px;font-weight:600;margin-bottom:8px;">캘린더 색칠 관리</p>
+      <p style="font-size:11px;color:#999;margin-bottom:8px;">클릭한 날짜가 일정 화면의 달력에서 강조 표시됩니다.</p>
+      <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-bottom:20px;max-width:340px;">
+        ${monthDays.map(d=>`<button onclick="toggleCampDay(${d});pageAdminScheduleManage()" style="height:30px;border-radius:6px;font-size:11px;cursor:pointer;border:1px solid ${campDays.includes(d)?'#C9A961':'#ddd'};${campDays.includes(d)?'background:#C9A961;color:#0B1F3E;font-weight:600;':'background:#fff;color:#666;'}">${d}</button>`).join('')}
+      </div>
       ${days.map((d,di)=>`
         <div style="border:1px solid #f0f0f0;border-radius:10px;padding:12px;margin-bottom:12px;">
           <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
