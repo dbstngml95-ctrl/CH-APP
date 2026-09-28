@@ -5,6 +5,7 @@ on:
     branches: [main]
     paths:
       - "royal-camp-app-v2/**"
+      - "mever-search/**"
       - ".github/workflows/deploy-royal-camp.yml"
   workflow_dispatch:
 
@@ -23,9 +24,14 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: actions/configure-pages@v5
+      - name: Assemble site
+        run: |
+          mkdir _site
+          cp -R royal-camp-app-v2/. _site/
+          cp -R mever-search _site/mever-search
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: royal-camp-app-v2
+          path: _site
 
   deploy:
     needs: build

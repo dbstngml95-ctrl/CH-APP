@@ -1,0 +1,336 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8">
+<title>Mever — 차세미</title><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<style>
+  :root {
+    color-scheme: light;
+    --color-primary-50:  #E0F8EC;
+    --color-primary-500: #03C75A;
+    --color-primary-600: #02A848;
+    --color-primary-700: #018236;
+    --color-danger-fg: #E23744;
+    --bg-base:     #FFFFFF;
+    --bg-subtle:   #F2F3F5;
+    --bg-elevated: #FFFFFF;
+    --text-primary:    #222222;
+    --text-secondary:  #555555;
+    --text-tertiary:   #888888;
+    --border-default: #E5E5E5;
+    --border-subtle:  #F0F0F0;
+    --radius-md: 6px;
+    --radius-lg: 10px;
+    --radius-full: 9999px;
+    --shadow-sm: 0 1px 2px rgba(0,0,0,0.04);
+    --chroma: #00D900;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: 'Nanum Square Neo', 'Nanum Square', Pretendard, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    letter-spacing: -0.015em;
+    background: #E7E9EC;
+  }
+  [hidden] { display: none !important; }
+  button { font-family: inherit; }
+
+  /* =======================================================
+     PAGE 1 — 검색결과 ('차세미')
+     ======================================================= */
+  .sr-app { width: 100%; max-width: 430px; margin: 0 auto; min-height: 100vh; background: var(--bg-subtle); color: var(--text-primary); padding-bottom: 32px; }
+
+  .sr-searchtop { display: flex; align-items: center; gap: 10px; padding: 14px 16px 10px; background: var(--bg-elevated); }
+  .sr-back { flex: none; width: 32px; height: 32px; display: grid; place-items: center; border: 0; background: transparent; color: var(--text-primary); padding: 0; cursor: pointer; }
+  .sr-searchbar {
+    flex: 1; min-width: 0; display: flex; align-items: center; gap: 10px; padding: 10px 14px;
+    background: var(--bg-subtle); border-radius: var(--radius-full); border: 1.5px solid var(--color-primary-500);
+  }
+  .sr-searchbar svg.sr-search-ico { flex: none; color: var(--color-primary-600); }
+  .sr-searchbar input { flex: 1; min-width: 0; border: 0; outline: none; background: transparent; font: inherit; font-size: 16px; font-weight: 700; color: var(--text-primary); }
+  .sr-searchbar input::-webkit-search-cancel-button { display: none; }
+  .sr-searchbar .sr-clear { flex: none; width: 20px; height: 20px; border-radius: 50%; border: 0; background: var(--border-default); color: var(--bg-elevated); display: grid; place-items: center; cursor: pointer; padding: 0; }
+
+  .sr-tabs { display: flex; gap: 18px; overflow-x: auto; padding: 12px 16px; background: var(--bg-elevated); border-bottom: 1px solid var(--border-subtle); scrollbar-width: none; }
+  .sr-tabs::-webkit-scrollbar { display: none; }
+  .sr-tabitem { flex: none; padding-bottom: 8px; font-size: 14px; font-weight: 700; color: var(--text-tertiary); border-bottom: 2px solid transparent; white-space: nowrap; }
+  .sr-tabitem.active { color: var(--text-primary); border-color: var(--color-primary-500); font-weight: 900; }
+
+  .sr-meta { margin: 0; padding: 14px 20px 4px; font-size: 12px; font-weight: 600; color: var(--text-tertiary); }
+  .sr-meta b { color: var(--text-primary); font-weight: 800; }
+
+  .sr-section { margin: 12px 16px 0; padding: 18px; background: var(--bg-elevated); border-radius: var(--radius-lg); box-shadow: var(--shadow-sm); }
+  .sr-section-head { display: flex; align-items: center; gap: 6px; margin-bottom: 4px; }
+  .sr-section-head svg { color: var(--color-primary-500); flex: none; }
+  .sr-section-title { margin: 0; font-size: 15px; font-weight: 900; }
+  .sr-section-more { margin-left: auto; font-size: 12px; font-weight: 700; color: var(--text-tertiary); display: flex; align-items: center; gap: 2px; }
+
+  .sr-rel-list { margin-top: 10px; display: flex; flex-direction: column; }
+  .sr-rel-row {
+    display: flex; align-items: center; gap: 12px; padding: 14px 6px; border-bottom: 1px solid var(--border-subtle);
+    color: inherit; width: 100%; background: transparent; border-left: 0; border-right: 0; border-top: 0; cursor: pointer; text-align: left;
+  }
+  .sr-rel-row:last-child { border-bottom: 0; }
+  .sr-rel-rank {
+    flex: none; width: 26px; height: 26px; border-radius: 50%; background: var(--color-primary-50); color: var(--color-primary-700);
+    display: grid; place-items: center; font-size: 12px; font-weight: 900;
+  }
+  .sr-rel-term { flex: 1; min-width: 0; font-size: 17px; font-weight: 800; color: var(--text-primary); }
+  .sr-rel-row svg.sr-rel-arrow { flex: none; color: var(--text-tertiary); }
+
+  .sr-news { margin-top: 8px; display: flex; flex-direction: column; }
+  .sr-news-row {
+    display: flex; gap: 12px; padding: 13px 0; border-bottom: 1px solid var(--border-subtle);
+    width: 100%; background: transparent; border-left: 0; border-right: 0; border-top: 0; text-align: left; cursor: pointer; color: inherit;
+  }
+  .sr-news-row:last-child { border-bottom: 0; }
+  .sr-news-thumb { flex: none; width: 72px; height: 72px; border-radius: var(--radius-md); overflow: hidden; background: var(--chroma); }
+  .sr-news-thumb img { width: 100%; height: 100%; display: block; object-fit: cover; }
+  .sr-news-body { flex: 1; min-width: 0; }
+  .sr-news-tag { display: inline-block; padding: 2px 7px; border-radius: 4px; font-size: 10px; font-weight: 800; line-height: 15px; }
+  .sr-news-tag.red   { background: #FDECEC; color: var(--color-danger-fg); }
+  .sr-news-tag.green { background: var(--color-primary-50); color: var(--color-primary-700); }
+  .sr-news-tag.gray  { background: var(--bg-subtle); color: var(--text-secondary); }
+  .sr-news-headline { margin: 6px 0 0; font-size: 13.5px; font-weight: 750; line-height: 1.42; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+  .sr-news-headline mark { background: none; color: var(--color-primary-700); font-weight: 900; }
+  .sr-news-src { margin-top: 6px; font-size: 11px; font-weight: 600; color: var(--text-tertiary); }
+
+  .sr-more {
+    margin: 12px 16px 0; width: calc(100% - 32px); height: 50px; border: 0; border-radius: var(--radius-full);
+    background: var(--bg-elevated); box-shadow: var(--shadow-sm); color: var(--text-secondary);
+    font-size: 14px; font-weight: 800; display: flex; align-items: center; justify-content: center; gap: 6px; cursor: pointer;
+  }
+  .sr-more svg { color: var(--text-tertiary); }
+  .sr-pagination { margin-top: 14px; height: 40px; display: flex; align-items: center; justify-content: center; gap: 14px; }
+  .sr-pagination button { border: 0; background: transparent; padding: 0; min-width: 16px; font-size: 13px; font-weight: 700; color: var(--text-tertiary); cursor: pointer; }
+  .sr-pagination button.current { color: var(--color-primary-600); font-weight: 900; }
+  .sr-pagination .arrow { display: grid; place-items: center; color: var(--border-strong, #C7C7C7); }
+
+  /* =======================================================
+     PAGE 2 — 기사 상세
+     ======================================================= */
+  .ar-app { width: 100%; max-width: 430px; margin: 0 auto; min-height: 100vh; background: var(--bg-elevated); color: var(--text-primary); padding-bottom: 48px; }
+  .ar-top {
+    position: sticky; top: 0; z-index: 2; display: flex; align-items: center; gap: 8px;
+    padding: 12px 16px; background: var(--bg-elevated); border-bottom: 1px solid var(--border-subtle);
+  }
+  .ar-top-title { font-size: 15px; font-weight: 800; color: var(--text-primary); }
+  .ar-body { padding: 22px 20px 0; }
+  .ar-tag { margin-bottom: 10px; }
+  .ar-title { margin: 0; font-size: 24px; font-weight: 900; line-height: 1.4; letter-spacing: -0.03em; text-wrap: balance; }
+  .ar-meta {
+    margin-top: 14px; padding-bottom: 14px; border-bottom: 1px solid var(--border-subtle);
+    display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  }
+  .ar-byline { font-size: 12px; font-weight: 600; color: var(--text-tertiary); }
+  .ar-byline b { color: var(--text-secondary); font-weight: 800; }
+  .ar-actions { display: flex; gap: 6px; flex: none; }
+  .ar-actions button {
+    width: 32px; height: 32px; border-radius: 50%; border: 1px solid var(--border-default); background: var(--bg-elevated);
+    color: var(--text-secondary); display: grid; place-items: center; padding: 0; cursor: pointer;
+  }
+  /* 모바일 뉴스처럼 화면 좌우 끝까지 꽉 차는 16:9 사진 */
+  .ar-figure { margin: 22px -20px 24px; }
+  .ar-figure img { display: block; width: 100%; aspect-ratio: 16 / 9; height: auto; object-fit: cover; background: var(--chroma); }
+  .ar-figure figcaption { margin-top: 8px; padding: 0 20px; font-size: 11px; font-weight: 600; color: var(--text-tertiary); }
+  .ar-content { font-size: 16px; line-height: 1.9; color: #333; }
+  .ar-content h3 { margin: 0 0 16px; font-size: 18px; font-weight: 900; line-height: 1.5; }
+  .ar-content p { margin: 0 0 20px; }
+</style>
+
+<!-- =======================================================
+     PAGE 1 — 검색결과 ('차세미')
+     ======================================================= -->
+<div class="sr-app" id="page-search">
+
+  <div class="sr-searchtop">
+    <button class="sr-back" type="button" aria-label="뒤로">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>
+    </button>
+    <label class="sr-searchbar">
+      <svg class="sr-search-ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4 4"/></svg>
+      <input type="search" id="search-input" value="차세미" aria-label="검색어" />
+      <button class="sr-clear" type="button" id="search-clear-btn" aria-label="검색어 지우기">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
+    </label>
+  </div>
+
+  <nav class="sr-tabs" aria-label="검색 결과 탭">
+    <span class="sr-tabitem">통합</span>
+    <span class="sr-tabitem active">뉴스</span>
+    <span class="sr-tabitem">이미지</span>
+    <span class="sr-tabitem">동영상</span>
+    <span class="sr-tabitem">VIEW</span>
+    <span class="sr-tabitem">지식iN</span>
+  </nav>
+
+  <p class="sr-meta"><b>'차세미'</b> 검색결과입니다</p>
+
+
+  <section class="sr-section" aria-label="관련기사">
+    <div class="sr-section-head">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h13a2 2 0 0 1 2 2v13a1 1 0 0 1-1 1H6a2 2 0 0 1-2-2z"/><path d="M8 9h8M8 13h8M8 17h5"/></svg>
+      <h2 class="sr-section-title">관련기사</h2>
+      <span class="sr-section-more">더보기
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M9 6l6 6-6 6"/></svg>
+      </span>
+    </div>
+    <div class="sr-news">
+      <button class="sr-news-row" type="button" data-article="1">
+        <div class="sr-news-thumb"><img src="chroma.png" alt="기사 이미지 크로마" /></div>
+        <div class="sr-news-body">
+          <span class="sr-news-tag green">이슈</span>
+          <p class="sr-news-headline">“재벌 5세가 온다” 태한그룹 외동딸 <mark>차세미</mark>, 경영 승계 수업 본격화</p>
+          <div class="sr-news-src">DAILY FOCUS</div>
+        </div>
+      </button>
+      <button class="sr-news-row" type="button" data-article="2">
+        <div class="sr-news-thumb"><img src="chroma.png" alt="기사 이미지 크로마" /></div>
+        <div class="sr-news-body">
+          <span class="sr-news-tag red">단독</span>
+          <p class="sr-news-headline">미성년 주식 부자 TOP5 평가액 1000억원 돌파, 1위 차ㅇㅇ는 누구?</p>
+          <div class="sr-news-src">BIZ INSIGHT</div>
+        </div>
+      </button>
+      <button class="sr-news-row" type="button" data-article="3">
+        <div class="sr-news-thumb"><img src="chroma.png" alt="기사 이미지 크로마" /></div>
+        <div class="sr-news-body">
+          <span class="sr-news-tag gray">화제</span>
+          <p class="sr-news-headline">태한家, 외동딸 <mark>차세미</mark> SNS 사진 화제</p>
+          <div class="sr-news-src">STAR TODAY</div>
+        </div>
+      </button>
+      <button class="sr-news-row" type="button" data-article="4">
+        <div class="sr-news-thumb"><img src="chroma.png" alt="기사 이미지 크로마" /></div>
+        <div class="sr-news-body">
+          <span class="sr-news-tag gray">포토</span>
+          <p class="sr-news-headline">태한그룹 차주찬 회장, 딸 <mark>차세미</mark>와 오붓한 VIP 시사회 나들이</p>
+          <div class="sr-news-src">CITY JOURNAL</div>
+        </div>
+      </button>
+    </div>
+  </section>
+
+  <button class="sr-more" type="button">뉴스 더보기
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+  </button>
+  <nav class="sr-pagination" aria-label="페이지">
+    <button class="arrow" type="button" aria-label="이전 페이지"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></button>
+    <button class="current" type="button">1</button>
+    <button type="button">2</button>
+    <button type="button">3</button>
+    <button type="button">4</button>
+    <button type="button">5</button>
+    <button type="button">6</button>
+    <button type="button">7</button>
+    <button class="arrow" type="button" aria-label="다음 페이지"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg></button>
+  </nav>
+
+</div>
+
+<!-- =======================================================
+     PAGE 2 — 기사 상세
+     ======================================================= -->
+<div class="ar-app" id="page-article" hidden>
+  <div class="ar-top">
+    <button class="sr-back" type="button" id="article-back-btn" aria-label="검색결과로 돌아가기">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>
+    </button>
+    <span class="ar-top-title" id="ar-source"></span>
+  </div>
+
+  <article class="ar-body">
+    <div class="ar-tag"><span class="sr-news-tag" id="ar-tag"></span></div>
+    <h1 class="ar-title" id="ar-title"></h1>
+    <div class="ar-meta">
+      <div class="ar-byline"><b id="ar-reporter"></b></div>
+      <div class="ar-actions">
+        <button type="button" aria-label="공유">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15V3M7 8l5-5 5 5"/><path d="M5 13v6a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6"/></svg>
+        </button>
+        <button type="button" aria-label="저장">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h12v18l-6-4-6 4z"/></svg>
+        </button>
+      </div>
+    </div>
+    <figure class="ar-figure">
+      <img src="chroma.png" alt="기사 이미지 크로마" />
+      <figcaption id="ar-caption"></figcaption>
+    </figure>
+    <div class="ar-content" id="ar-content"></div>
+  </article>
+</div>
+
+<script>
+  var articles = {
+    1: {
+      source: 'DAILY FOCUS', reporter: '김현우 기자', tag: ['이슈', 'green'],
+      title: '“재벌 5세가 온다”',
+      caption: '태한그룹 외동딸 차세미 관련 자료사진. / DAILY FOCUS',
+      body: '<h3>태한그룹 외동딸 차세미, 경영 승계 수업 본격화</h3>' +
+        '<p>태한그룹 차주찬 회장의 외동딸 차세미가 최근 그룹 주요 행사에 잇따라 모습을 드러내며 재계의 관심을 받고 있다.</p>' +
+        '<p>차세미는 최근 오너 일가가 보유한 핵심 계열사 지분을 증여받은 것으로 알려졌다.</p>' +
+        '<p>재계에서는 차세미가 성인이 된 이후 본격적인 경영 수업에 들어갈 가능성이 높다고 보고 있다.</p>'
+    },
+    2: {
+      source: 'BIZ INSIGHT', reporter: '이준석 기자', tag: ['단독', 'red'],
+      title: '“미성년 주식 부자 TOP5 평가액 1000억원 돌파, 1위 차ㅇㅇ는 누구?”',
+      caption: '태한그룹 차세미 관련 자료사진. / BIZ INSIGHT',
+      body: '<p>국내 미성년 주식 부자 상위 5명의 보유 주식 평가액이 총 1,000억 원을 넘어선 것으로 나타났다.</p>' +
+        '<p>이 가운데 1위에 오른 인물은 태한그룹 차주찬 회장의 외동딸 차세미로, 보유한 계열사 주식의 평가액만 수백억 원에 달하는 것으로 알려졌다.</p>' +
+        '<p>차세미는 어린 시절부터 꾸준히 지분을 증여받으며 태한그룹의 유력한 차기 승계자로 거론돼 왔다.</p>'
+    },
+    3: {
+      source: 'STAR TODAY', reporter: '박서연 기자', tag: ['화제', 'gray'],
+      title: '“태한家, 외동딸 차세미 SNS 사진 화제”',
+      caption: '온라인에서 화제가 된 차세미 관련 자료사진. / STAR TODAY',
+      body: '<p>태한그룹 외동딸 차세미의 일상 사진이 온라인상에서 화제를 모으고 있다.</p>' +
+        '<p>최근 SNS에 공개된 사진 속 차세미는 명품 가방에 교복을 매치한 모습으로, 게시 직후 착용 제품과 액세서리 정보가 빠르게 공유됐다.</p>' +
+        '<p>일각에서는 “재벌가 상속녀의 삶을 지나치게 소비한다”는 지적도 나왔지만, 차세미를 향한 대중의 관심은 더욱 커지는 분위기다.</p>'
+    },
+    4: {
+      source: 'CITY JOURNAL', reporter: '정민재 기자', tag: ['포토', 'gray'],
+      title: '“태한그룹 차주찬 회장, 딸과 오붓한 VIP 시사회 나들이”',
+      caption: 'VIP 시사회에 참석한 차세미 관련 자료사진. / CITY JOURNAL',
+      body: '<p>차주찬 태한그룹 회장이 외동딸 차세미와 함께 영화 VIP 시사회에 참석했다.</p>' +
+        '<p>평소 사생활 노출을 꺼려온 차 회장이 공식 석상에 딸과 동행한 것은 이례적인 일이다.</p>' +
+        '<p>이날 두 사람은 취재진의 요청에 나란히 포즈를 취했으며, 차 회장은 시사회가 끝날 때까지 딸의 곁을 지키는 다정한 모습을 보였다.</p>'
+    }
+  };
+
+  var pageSearch = document.getElementById('page-search');
+  var pageArticle = document.getElementById('page-article');
+  var searchInput = document.getElementById('search-input');
+
+  function openArticle(id) {
+    var a = articles[id];
+    document.getElementById('ar-source').textContent = a.source;
+    var tag = document.getElementById('ar-tag');
+    tag.textContent = a.tag[0];
+    tag.className = 'sr-news-tag ' + a.tag[1];
+    document.getElementById('ar-title').textContent = a.title;
+    document.getElementById('ar-reporter').textContent = a.reporter;
+    document.getElementById('ar-caption').textContent = a.caption;
+    document.getElementById('ar-content').innerHTML = a.body;
+    pageSearch.hidden = true;
+    pageArticle.hidden = false;
+    window.scrollTo(0, 0);
+  }
+
+  function closeArticle() {
+    pageArticle.hidden = true;
+    pageSearch.hidden = false;
+    window.scrollTo(0, 0);
+  }
+
+  document.querySelectorAll('.sr-news-row').forEach(function (row) {
+    row.addEventListener('click', function () { openArticle(row.getAttribute('data-article')); });
+  });
+  document.getElementById('article-back-btn').addEventListener('click', closeArticle);
+  document.getElementById('search-clear-btn').addEventListener('click', function (e) {
+    e.preventDefault();
+    searchInput.value = '';
+    searchInput.focus();
+  });
+</script>
+
+</body></html>
