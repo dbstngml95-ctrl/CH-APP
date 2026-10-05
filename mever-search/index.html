@@ -36,7 +36,7 @@
   /* =======================================================
      PAGE 1 — 검색결과 ('차세미')
      ======================================================= */
-  .sr-app { width: 100%; max-width: 430px; margin: 0 auto; min-height: 100vh; background: var(--bg-subtle); color: var(--text-primary); padding-bottom: 32px; }
+  .sr-app { width: 100%; max-width: 100%; margin: 0 auto; min-height: 100vh; min-height: 100dvh; background: var(--bg-subtle); color: var(--text-primary); padding-bottom: 32px; }
 
   .sr-searchtop { display: flex; align-items: center; gap: 10px; padding: 14px 16px 10px; background: var(--bg-elevated); }
   .sr-back { flex: none; width: 32px; height: 32px; display: grid; place-items: center; border: 0; background: transparent; color: var(--text-primary); padding: 0; cursor: pointer; }
@@ -107,7 +107,7 @@
   /* =======================================================
      PAGE 2 — 기사 상세
      ======================================================= */
-  .ar-app { width: 100%; max-width: 430px; margin: 0 auto; min-height: 100vh; background: var(--bg-elevated); color: var(--text-primary); padding-bottom: 48px; }
+  .ar-app { width: 100%; max-width: 100%; margin: 0 auto; min-height: 100vh; min-height: 100dvh; background: var(--bg-elevated); color: var(--text-primary); padding-bottom: 48px; }
   .ar-top {
     position: sticky; top: 0; z-index: 2; display: flex; align-items: center; gap: 8px;
     padding: 12px 16px; background: var(--bg-elevated); border-bottom: 1px solid var(--border-subtle);
@@ -134,6 +134,24 @@
   .ar-content { font-size: 16px; line-height: 1.9; color: #333; }
   .ar-content h3 { margin: 0 0 16px; font-size: 18px; font-weight: 900; line-height: 1.5; }
   .ar-content p { margin: 0 0 20px; }
+  /* Adapt to both cover and unfolded displays using the viewport width. */
+  body { padding-left: env(safe-area-inset-left, 0px); padding-right: env(safe-area-inset-right, 0px); }
+  .sr-app, .ar-app { overflow-wrap: anywhere; }
+  .ar-meta { flex-wrap: wrap; }
+  @media (max-width: 380px) {
+    .sr-searchtop { padding-left: 12px; padding-right: 12px; gap: 6px; }
+    .sr-tabs { gap: 14px; padding-left: 12px; padding-right: 12px; }
+    .sr-news-thumb { width: 64px; height: 64px; }
+    .ar-title { font-size: 22px; }
+  }
+  @media (min-width: 600px) {
+    .sr-searchtop, .sr-tabs, .ar-top { padding-left: 24px; padding-right: 24px; }
+    .sr-news-thumb { width: 96px; height: 96px; }
+    .ar-body { padding-left: 32px; padding-right: 32px; }
+    .ar-title { font-size: 30px; }
+    .ar-figure { margin-left: -32px; margin-right: -32px; }
+    .ar-figure figcaption { padding-left: 32px; padding-right: 32px; }
+  }
 </style>
 
 <!-- =======================================================
