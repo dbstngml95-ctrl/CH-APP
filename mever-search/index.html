@@ -130,6 +130,7 @@
   /* 모바일 뉴스처럼 화면 좌우 끝까지 꽉 차는 16:9 사진 */
   .ar-figure { margin: 22px -20px 24px; }
   .ar-figure img { display: block; width: 100%; aspect-ratio: 16 / 9; height: auto; object-fit: cover; background: var(--chroma); }
+  .ar-figure img.portrait { aspect-ratio: auto; height: auto; object-fit: contain; background: #FFFFFF; }
   .ar-figure figcaption { margin-top: 8px; padding: 0 20px; font-size: 11px; font-weight: 600; color: var(--text-tertiary); }
   .ar-content { font-size: 16px; line-height: 1.9; color: #333; }
   .ar-content h3 { margin: 0 0 16px; font-size: 18px; font-weight: 900; line-height: 1.5; }
@@ -219,7 +220,7 @@
         </div>
       </button>
       <button class="sr-news-row" type="button" data-article="4">
-        <div class="sr-news-thumb"><img src="chroma.png" alt="기사 이미지 크로마" /></div>
+        <div class="sr-news-thumb"><img src="vip-premiere.jpeg" alt="VIP 시사회 참석 사진" /></div>
         <div class="sr-news-body">
           <span class="sr-news-tag gray">포토</span>
           <p class="sr-news-headline">태한그룹 차주찬 회장, 딸 <mark>차세미</mark>와 오붓한 VIP 시사회 나들이</p>
@@ -322,6 +323,11 @@
 
   function openArticle(id) {
     var a = articles[id];
+    var articleImage = document.querySelector('.ar-figure img');
+    var isPremiere = String(id) === '4';
+    articleImage.src = isPremiere ? 'vip-premiere.jpeg' : 'chroma.png';
+    articleImage.alt = isPremiere ? 'VIP 시사회 참석 사진' : '기사 이미지 크로마';
+    articleImage.classList.toggle('portrait', isPremiere);
     document.getElementById('ar-source').textContent = a.source;
     var tag = document.getElementById('ar-tag');
     tag.textContent = a.tag[0];
