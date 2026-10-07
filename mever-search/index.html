@@ -196,7 +196,7 @@
     </div>
     <div class="sr-news">
       <button class="sr-news-row" type="button" data-article="1">
-        <div class="sr-news-thumb"><img src="chroma.png" alt="기사 이미지 크로마" /></div>
+        <div class="sr-news-thumb"><img src="semi-portrait.png" alt="차세미 기사 사진" /></div>
         <div class="sr-news-body">
           <span class="sr-news-tag green">이슈</span>
           <p class="sr-news-headline">“재벌 5세가 온다” 태한그룹 외동딸 <mark>차세미</mark>, 경영 승계 수업 본격화</p>
@@ -324,10 +324,14 @@
   function openArticle(id) {
     var a = articles[id];
     var articleImage = document.querySelector('.ar-figure img');
-    var isPremiere = String(id) === '4';
-    articleImage.src = isPremiere ? 'vip-premiere.jpeg' : 'chroma.png';
-    articleImage.alt = isPremiere ? 'VIP 시사회 참석 사진' : '기사 이미지 크로마';
-    articleImage.classList.toggle('portrait', isPremiere);
+    var articlePhotos = {
+      '1': { src: 'semi-portrait.png', alt: '차세미 기사 사진' },
+      '4': { src: 'vip-premiere.jpeg', alt: 'VIP 시사회 참석 사진' }
+    };
+    var photo = articlePhotos[String(id)];
+    articleImage.src = photo ? photo.src : 'chroma.png';
+    articleImage.alt = photo ? photo.alt : '기사 이미지 크로마';
+    articleImage.classList.toggle('portrait', Boolean(photo));
     document.getElementById('ar-source').textContent = a.source;
     var tag = document.getElementById('ar-tag');
     tag.textContent = a.tag[0];
