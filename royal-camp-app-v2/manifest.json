@@ -4,7 +4,7 @@
   "description": "로열캠프 참가자를 위한 일정, 공지사항, 가이드북 안내 앱",
   "start_url": ".",
   "scope": ".",
-  "display": "standalone",
+  "display": "fullscreen",
   "background_color": "#0B1F3E",
   "theme_color": "#0B1F3E",
   "icons": [
