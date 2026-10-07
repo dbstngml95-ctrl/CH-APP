@@ -127,11 +127,11 @@
     width: 32px; height: 32px; border-radius: 50%; border: 1px solid var(--border-default); background: var(--bg-elevated);
     color: var(--text-secondary); display: grid; place-items: center; padding: 0; cursor: pointer;
   }
-  /* 모바일 뉴스처럼 화면 좌우 끝까지 꽉 차는 16:9 사진 */
-  .ar-figure { margin: 22px -20px 24px; }
+  /* Keep a small gutter around article photos on cover and unfolded screens. */
+  .ar-figure { margin: 22px -4px 24px; }
   .ar-figure img { display: block; width: 100%; aspect-ratio: 16 / 9; height: auto; object-fit: cover; background: var(--chroma); }
   .ar-figure img.portrait { aspect-ratio: auto; height: auto; object-fit: contain; background: #FFFFFF; }
-  .ar-figure figcaption { margin-top: 8px; padding: 0 20px; font-size: 11px; font-weight: 600; color: var(--text-tertiary); }
+  .ar-figure figcaption { margin-top: 8px; padding: 0; font-size: 11px; font-weight: 600; color: var(--text-tertiary); }
   .ar-content { font-size: 16px; line-height: 1.9; color: #333; }
   .ar-content h3 { margin: 0 0 16px; font-size: 18px; font-weight: 900; line-height: 1.5; }
   .ar-content h2 { margin: 32px 0 16px; font-size: 20px; font-weight: 900; line-height: 1.5; }
@@ -152,8 +152,7 @@
     .sr-news-thumb { width: 96px; height: 96px; }
     .ar-body { padding-left: 32px; padding-right: 32px; }
     .ar-title { font-size: 30px; }
-    .ar-figure { margin-left: -32px; margin-right: -32px; }
-    .ar-figure figcaption { padding-left: 32px; padding-right: 32px; }
+    .ar-figure { margin-left: -8px; margin-right: -8px; }
   }
 </style>
 
