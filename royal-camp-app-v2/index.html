@@ -196,24 +196,31 @@ const GUIDEBOOK = [
   }
 ];
 
+const CAMP_START_DATE = "2027-10-11";
+const CAMP_END_DATE = "2027-10-17";
+const CAMP_DATE_LABELS = ["OCT 11", "OCT 12", "OCT 13", "OCT 14", "OCT 15", "OCT 16", "OCT 17"];
 const SCHEDULE = [
-  {day:"DAY 1",date:"JUN 11",items:[{time:"14:00",a:"입소 및 등록",l:"그랜드 로비"},{time:"16:00",a:"오리엔테이션",l:"크라운 홀"},{time:"18:30",a:"웰컴 디너",l:"그랜드 다이닝"},{time:"21:00",a:"그룹 미팅",l:"로열 라운지"}]},
-  {day:"DAY 2",date:"JUN 12",items:[{time:"07:30",a:"조식",l:"다이닝 홀"},{time:"09:10",a:"오전 집합",l:"그랜드 로비"},{time:"09:30",a:"갤러리 수업",l:"청담 아트센터"},{time:"13:30",a:"도슨트 프로그램",l:"메인 갤러리"},{time:"18:00",a:"디너",l:"그랜드 다이닝"}]},
-  {day:"DAY 3",date:"JUN 13",items:[{time:"08:00",a:"조식",l:"다이닝 홀"},{time:"09:00",a:"리더십 워크숍",l:"아카데미 룸"},{time:"13:00",a:"그룹 프로젝트",l:"크라운 홀"},{time:"16:30",a:"수료식",l:"크라운 홀"},{time:"17:30",a:"퇴소",l:"그랜드 로비"}]},
+  {day:"DAY 1",date:"OCT 11",items:[{time:"14:00",a:"입소 및 등록",l:"그랜드 로비"},{time:"16:00",a:"오리엔테이션",l:"크라운 홀"},{time:"18:30",a:"웰컴 디너",l:"그랜드 다이닝"},{time:"21:00",a:"그룹 미팅",l:"로열 라운지"}]},
+  {day:"DAY 2",date:"OCT 12",items:[{time:"07:30",a:"조식",l:"다이닝 홀"},{time:"09:10",a:"오전 집합",l:"그랜드 로비"},{time:"09:30",a:"갤러리 수업",l:"청담 아트센터"},{time:"13:30",a:"도슨트 프로그램",l:"메인 갤러리"},{time:"18:00",a:"디너",l:"그랜드 다이닝"}]},
+  {day:"DAY 3",date:"OCT 13",items:[{time:"오전",a:"Discussion & Debate",l:""},{time:"오후",a:"World History & Civilization",l:""}]},
+  {day:"DAY 4",date:"OCT 14",items:[{time:"오전",a:"Academic Writing",l:""},{time:"오후",a:"International Law & Society",l:""}]},
+  {day:"DAY 5",date:"OCT 15",items:[{time:"오전",a:"Entrepreneurship",l:""},{time:"오후",a:"Creative Writing",l:""}]},
+  {day:"DAY 6",date:"OCT 16",items:[{time:"오전",a:"Presentation & Communication",l:""},{time:"오후",a:"Global Economics",l:""}]},
+  {day:"DAY 7",date:"OCT 17",items:[{time:"오전",a:"최종 평가",l:""},{time:"16:30",a:"수료식",l:"크라운 홀"},{time:"17:30",a:"퇴소",l:"그랜드 로비"}]},
 ];
 
 const MATERIALS = [
-  {id:"m1",type:"PDF",title:"2026 로열캠프 참가자 안내서",meta:"8 PAGES · UPDATED JUN 10"},
-  {id:"m2",type:"PDF",title:"갤러리 클래스 워크시트",meta:"DAY 2 · 4 PAGES"},
-  {id:"m3",type:"PDF",title:"리더십 워크숍 브리프",meta:"DAY 3 · 6 PAGES"},
+  {id:"m1",type:"PDF",title:"2027 로열캠프 참가자 안내서",meta:"8 PAGES · UPDATED OCT 10"},
+  {id:"m2",type:"PDF",title:"갤러리 클래스 워크시트",meta:"OCT 12 · DAY 2 · 4 PAGES"},
+  {id:"m3",type:"PDF",title:"리더십 워크숍 브리프",meta:"OCT 13 · DAY 3 · 6 PAGES"},
   {id:"m4",type:"MAP",title:"로열캠프 시설 배치도",meta:"FACILITY MAP · 1 PAGE"},
 ];
 
 const NOTICES = [
-  {id:"n1",title:"조식 및 오전 집합 시간 안내",date:"2026.06.11",dept:"운영본부",body:"DAY 2 조식은 07:30부터 다이닝 홀에서 제공됩니다. 오전 집합은 09:10까지 그랜드 로비로 모여주시기 바랍니다."},
-  {id:"n2",title:"갤러리 클래스 복장 안내",date:"2026.06.11",dept:"프로그램팀",body:"외부 공식 프로그램인 만큼 세미 정장을 권장드립니다. 슬리퍼, 트레이닝복 착용은 지양해 주세요."},
-  {id:"n3",title:"캠프 촬영 및 SNS 업로드 관련 안내",date:"2026.06.10",dept:"운영본부",body:"캠프 프로그램 진행 상황은 비밀유지서약서에 따라 개인 SNS 등 외부에 업로드할 수 없습니다."},
-  {id:"n4",title:"로열 나이트 좌석 및 입장 안내",date:"2026.06.10",dept:"행사운영팀",body:"로열 나이트 좌석은 사전 배정된 자리로 안내됩니다. 입장은 18:00부터 그랜드 다이닝 입구에서 가능합니다."},
+  {id:"n1",title:"조식 및 오전 집합 시간 안내",date:"2027.10.11",dept:"운영본부",body:"DAY 2 조식은 07:30부터 다이닝 홀에서 제공됩니다. 오전 집합은 09:10까지 그랜드 로비로 모여주시기 바랍니다."},
+  {id:"n2",title:"갤러리 클래스 복장 안내",date:"2027.10.11",dept:"프로그램팀",body:"외부 공식 프로그램인 만큼 세미 정장을 권장드립니다. 슬리퍼, 트레이닝복 착용은 지양해 주세요."},
+  {id:"n3",title:"캠프 촬영 및 SNS 업로드 관련 안내",date:"2027.10.10",dept:"운영본부",body:"캠프 프로그램 진행 상황은 비밀유지서약서에 따라 개인 SNS 등 외부에 업로드할 수 없습니다."},
+  {id:"n4",title:"로열 나이트 좌석 및 입장 안내",date:"2027.10.10",dept:"행사운영팀",body:"로열 나이트 좌석은 사전 배정된 자리로 안내됩니다. 입장은 18:00부터 그랜드 다이닝 입구에서 가능합니다."},
 ];
 
 const QNA = [
@@ -269,7 +276,34 @@ function getScores(){ return scoreStore.get(); }
 function getScore(id){ const scores = getScores(); return scores[id] !== undefined ? scores[id] : (PARTICIPANTS.find(p=>p.id===id)||{}).baseScore || 0; }
 function setScore(id, value){ const scores = getScores(); scores[id] = value; scoreStore.set(scores); }
 
-const todayCardStore = makeStore("rc2_today_card", { dayLabel:"DAY 2", date:"JUN 12", desc:"오늘은 갤러리 수업이 있는 날입니다.\nTPO에 맞는 적절한 복장을 갖추어 참석해 주세요." });
+const todayCardStore = makeStore("rc2_today_card", { dayLabel:"DAY 2", date:"OCT 12", desc:"오늘은 갤러리 수업이 있는 날입니다.\nTPO에 맞는 적절한 복장을 갖추어 참석해 주세요." });
+// Migrate camp dates once without resetting scores, signatures, or edited text.
+const CAMP_DATES_VERSION = "2027-10-11-to-17-v1";
+if (localStorage.getItem("rc2_camp_dates_version") !== CAMP_DATES_VERSION) {
+  const storedDays = scheduleStore.get();
+  const wasThreeDays = storedDays.length === 3;
+  const migratedDays = SCHEDULE.map((defaults, i) => {
+    const saved = storedDays.find(d => d.day === defaults.day) || storedDays[i];
+    if (!saved) return defaults;
+    let items = saved.items || [];
+    if (wasThreeDays && i === 2) {
+      items = items.filter(it => it.a !== "수료식" && it.a !== "퇴소");
+    }
+    return { ...saved, day: defaults.day, date: CAMP_DATE_LABELS[i], items };
+  });
+  scheduleStore.set(migratedDays);
+  const moveDate = value => String(value || "")
+    .replace(/2026\.06\.(\d{2})/g, "2027.10.$1")
+    .replace(/2026-06-(\d{2})/g, "2027-10-$1")
+    .replace(/JUN (\d{1,2})/g, "OCT $1")
+    .replace(/2026 로열캠프/g, "2027 로열캠프");
+  noticeStore.set(noticeStore.get().map(n => ({ ...n, date: moveDate(n.date), title: moveDate(n.title), body: moveDate(n.body) })));
+  materialsStore.set(materialsStore.get().map(m => ({ ...m, title: moveDate(m.title), meta: /OCT/.test(moveDate(m.meta)) ? moveDate(m.meta) : moveDate(m.meta).replace(/DAY ([1-7])/, (_, d) => CAMP_DATE_LABELS[Number(d) - 1] + " · DAY " + d) })));
+  const today = todayCardStore.get();
+  const dayIndex = Math.max(0, Math.min(6, (Number(String(today.dayLabel).match(/\d+/)?.[0]) || 1) - 1));
+  todayCardStore.set({ ...today, date: CAMP_DATE_LABELS[dayIndex] });
+  localStorage.setItem("rc2_camp_dates_version", CAMP_DATES_VERSION);
+}
 function getTodayCard(){ return todayCardStore.get(); }
 function setTodayCard(val){ todayCardStore.set(val); }
 
@@ -480,17 +514,18 @@ function confirmSig(){
 
 function pageSchedule(){
   const scheduleData = getSchedule();
-  const days = Array.from({length:30},(_,i)=>i+1);
+  const days = Array.from({length:31},(_,i)=>i+1);
   const campDays = getCampDays();
-  const active = scheduleData.find(s=>s.day===scheduleActiveDay);
+  const active = scheduleData.find(s=>s.day===scheduleActiveDay) || scheduleData[0];
   render(`
     ${header('일정',{back:true})}
-    <div class="list-page-title"><div class="kicker">ROYAL CAMP SCHEDULE</div><div class="serif title">June 2026</div></div>
+    <div class="list-page-title"><div class="kicker">ROYAL CAMP SCHEDULE</div><div class="serif title">October 2027</div></div>
     <div style="padding:0 16px;">
       <div style="display:grid;grid-template-columns:repeat(7,1fr);text-align:center;font-size:9px;color:#a9bbd6;margin-bottom:4px;">
         ${['MON','TUE','WED','THU','FRI','SAT','SUN'].map(w=>`<span>${w}</span>`).join('')}
       </div>
       <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:4px;">
+        ${Array.from({length:4},()=>'<div aria-hidden="true"></div>').join('')}
         ${days.map(d=>`<div style="height:34px;display:flex;align-items:center;justify-content:center;border-radius:8px;font-size:11px;${campDays.includes(d)?'background:#C9A961;color:#0B1F3E;font-weight:600;':'color:#d7e0ef;'}">${d}</div>`).join('')}
       </div>
     </div>
@@ -498,7 +533,7 @@ function pageSchedule(){
       ${scheduleData.map(s=>`<button onclick="scheduleActiveDay='${s.day}';pageSchedule()" style="flex:1;background:none;border:none;padding:12px 0;font-size:11px;cursor:pointer;color:${scheduleActiveDay===s.day?'#C9A961':'#a9bbd6'};border-bottom:2px solid ${scheduleActiveDay===s.day?'#C9A961':'transparent'};">${s.day}<br/><span style="font-size:9px;">${s.date}</span></button>`).join('')}
     </div>
     <div style="padding:18px;">
-      ${active.items.map(it=>`<div style="display:flex;gap:12px;margin-bottom:14px;"><span style="color:#C9A961;font-size:11px;width:44px;flex-shrink:0;">${it.time}</span><div><div style="font-size:12.5px;">${it.a}</div><div style="font-size:10.5px;color:#a9bbd6;">${it.l}</div></div></div>`).join('')}
+      ${(active ? active.items : []).map(it=>`<div style="display:flex;gap:12px;margin-bottom:14px;"><span style="color:#C9A961;font-size:11px;width:44px;flex-shrink:0;">${it.time}</span><div><div style="font-size:12.5px;">${it.a}</div><div style="font-size:10.5px;color:#a9bbd6;">${it.l}</div></div></div>`).join('')}
     </div>
   `);
 }
@@ -592,7 +627,7 @@ function pageSurvey(){
     ${header('설문조사',{back:true})}
     <div class="list-page-title"><div class="kicker">ROYAL CAMP SURVEY</div><div class="serif title">Program Survey</div></div>
     <div style="margin:0 16px;background:#122A50;border-radius:16px;padding:16px;">
-      <div style="display:flex;justify-content:space-between;font-size:10px;margin-bottom:10px;"><span style="color:#C9A961;">진행 중 &middot; DAY 2</span><span style="color:#a9bbd6;">2/3</span></div>
+      <div style="display:flex;justify-content:space-between;font-size:10px;margin-bottom:10px;"><span style="color:#C9A961;">진행 중 &middot; DAY 2</span><span style="color:#a9bbd6;">2/7</span></div>
       <div style="font-size:13px;margin-bottom:14px;">갤러리 클래스 만족도 조사</div>
       ${surveySubmitted ? `<div style="text-align:center;color:#C9A961;font-size:12.5px;padding:20px 0;">설문이 제출되었습니다.</div>` : `
       <div style="font-size:11.5px;color:#c7d3e6;margin-bottom:8px;">1. 오늘 갤러리 클래스는 전반적으로 만족스러웠나요?</div>
@@ -609,10 +644,10 @@ function pageSurvey(){
       `}
     </div>
     <div style="margin:16px;background:#122A50;border-radius:16px;padding:16px;opacity:0.6;">
-      <div style="font-size:10px;color:#a9bbd6;">예정 &middot; DAY 3</div>
+      <div style="font-size:10px;color:#a9bbd6;">예정 &middot; DAY 7</div>
       <div style="font-size:13px;margin-top:4px;">로열캠프 종합 만족도 조사</div>
       <div style="font-size:10.5px;color:#a9bbd6;margin-top:6px;">캠프 종료 후 전체 프로그램에 대한 설문이 열립니다.</div>
-      <div style="font-size:10px;color:#C9A961;margin-top:8px;">JUN 13 &middot; 17:30 OPEN</div>
+      <div style="font-size:10px;color:#C9A961;margin-top:8px;">OCT 17 &middot; 17:30 OPEN</div>
     </div>
   `);
 }
@@ -878,7 +913,7 @@ function addNotice(){
   const body = document.getElementById('n-body').value.trim();
   if(!title || !body) return;
   const notices = getNotices();
-  notices.unshift({ id:'n'+Date.now(), title, dept, body, date:new Date().toISOString().slice(0,10).replace(/-/g,'.') });
+  notices.unshift({ id:'n'+Date.now(), title, dept, body, date:CAMP_START_DATE.replace(/-/g,'.') });
   noticeStore.set(notices);
   pageAdminNotices();
 }
@@ -917,7 +952,7 @@ function saveGuidebookItem(i){
 function pageAdminScheduleManage(){
   const days = getSchedule();
   const campDays = getCampDays();
-  const monthDays = Array.from({length:30},(_,i)=>i+1);
+  const monthDays = Array.from({length:31},(_,i)=>i+1);
   adminWrap(`
     ${adminSubHeader('일정 관리')}
     <div style="padding:16px;">
@@ -974,7 +1009,7 @@ function removeScheduleItem(di,ii){
 }
 function addScheduleDay(){
   const days = getSchedule();
-  days.push({ day:`DAY ${days.length+1}`, date:"", items:[] });
+  days.push({ day:`DAY ${days.length+1}`, date:CAMP_DATE_LABELS[days.length] || "", items:[] });
   scheduleStore.set(days);
   pageAdminScheduleManage();
 }
@@ -1024,7 +1059,7 @@ function pageAdminToday(){
     <div style="padding:16px;">
       <label style="font-size:11px;color:#999;display:block;margin-bottom:4px;">일차 라벨 (예: DAY 2)</label>
       <input id="tc-day" class="search" value="${tc.dayLabel}" style="margin-bottom:10px;"/>
-      <label style="font-size:11px;color:#999;display:block;margin-bottom:4px;">날짜 (예: JUN 12)</label>
+      <label style="font-size:11px;color:#999;display:block;margin-bottom:4px;">날짜 (예: OCT 12)</label>
       <input id="tc-date" class="search" value="${tc.date}" style="margin-bottom:10px;"/>
       <label style="font-size:11px;color:#999;display:block;margin-bottom:4px;">안내 문구</label>
       <textarea id="tc-desc" style="width:100%;height:80px;border:1px solid #ddd;border-radius:8px;padding:8px;font-size:12.5px;margin-bottom:12px;">${tc.desc}</textarea>
