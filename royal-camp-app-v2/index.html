@@ -192,7 +192,7 @@ const GUIDEBOOK = [
     "no": "Ⅸ",
     "title": "비밀유지서약서",
     "summary": "비밀유지서약서",
-    "body": "비밀유지서약서\n본인은 청담국제고등학교 로열캠프 참가자로서 캠프 운영 및 프로그램 참여 과정에서 알게 된 정보를 외부에 공개하거나 유출하지 않을 것을 서약합니다.\n\n비밀유지 대상\n캠프 내 프로그램 및 평가에 관한 사항\n\n캠프에서 취득한 정보를 제3자에게 전달하거나 온라인에 게시하지 않습니다.\n프로그램 및 관련 자료를 무단으로 촬영·녹음·복제·배포하지 않습니다.\n다른 참가자의 개인정보 및 캠프 내 활동 내용을 외부에 공개하지 않습니다.\n비밀유지 의무는 캠프 종료 후에도 유효합니다.\n위 사항을 위반할 경우 캠프 규정에 따른 조치 및 참가 자격 제한 등의 불이익이 발생할 수 있음을 확인합니다.\n본인은 위 내용을 충분히 확인하였으며 이에 동의합니다.\n참가자 성명　____________\n☐ 위 내용을 확인하였으며 비밀유지 의무에 동의합니다.\n[동의 및 전자서명]"
+    "body": "비밀유지서약서\n본인은 청담국제고등학교 로열캠프 참가자로서 캠프 운영 및 프로그램 참여 과정에서 알게 된 정보를 외부에 공개하거나 유출하지 않을 것을 서약합니다.\n\n비밀유지 대상\n캠프 내 프로그램 및 평가에 관한 사항\n\n캠프에서 취득한 정보를 제3자에게 전달하거나 온라인에 게시하지 않습니다.\n프로그램 및 관련 자료를 무단으로 촬영·녹음·복제·배포하지 않습니다.\n다른 참가자의 개인정보 및 캠프 내 활동 내용을 외부에 공개하지 않습니다.\n비밀유지 의무는 캠프 종료 후에도 유효합니다.\n위 사항을 위반할 경우 캠프 규정에 따른 조치 및 참가 자격 제한 등의 불이익이 발생할 수 있음을 확인합니다.\n본인은 위 내용을 충분히 확인하였으며 이에 동의합니다.\n☐ 위 내용을 확인하였으며 비밀유지 의무에 동의합니다.\n[동의 및 전자서명]"
   }
 ];
 
@@ -262,6 +262,13 @@ if (localStorage.getItem("rc2_agreement_date_version") !== "no-date-v1") {
     ? { ...item, body: item.body.replace(/　2027\. __\. __\./g, "") }
     : item));
   localStorage.setItem("rc2_agreement_date_version", "no-date-v1");
+}
+// Remove the printed name line once without clearing signatures or other edits.
+if (localStorage.getItem("rc2_agreement_name_version") !== "no-name-v1") {
+  guidebookStore.set(guidebookStore.get().map(item => item.id === "agreement"
+    ? { ...item, body: item.body.replace(/^참가자 성명[^\n]*(?:\n|$)/gm, "") }
+    : item));
+  localStorage.setItem("rc2_agreement_name_version", "no-name-v1");
 }
 const scheduleStore = makeStore("rc2_schedule", SCHEDULE);
 const materialsStore = makeStore("rc2_materials", MATERIALS);
