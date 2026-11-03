@@ -297,7 +297,7 @@ function getScores(){ return scoreStore.get(); }
 function getScore(id){ const scores = getScores(); return scores[id] !== undefined ? scores[id] : (PARTICIPANTS.find(p=>p.id===id)||{}).baseScore || 0; }
 function setScore(id, value){ const scores = getScores(); scores[id] = value; scoreStore.set(scores); }
 
-const todayCardStore = makeStore("rc2_today_card", { dayLabel:"DAY 1", date:"OCT 11", desc:"로열캠프에 오신 것을 환영합니다.\n입소 및 등록 후 오리엔테이션에 참석해 주세요." });
+const todayCardStore = makeStore("rc2_today_card", { dayLabel:"DAY 2", date:"2027.10.12", desc:"오늘은 갤러리 수업이 있는 날입니다.\nTPO에 맞는 적절한 복장을 갖추어 참석해 주세요." });
 // Migrate camp dates once without resetting scores, signatures, or edited text.
 const CAMP_DATES_VERSION = "2027-10-11-to-17-v1";
 if (localStorage.getItem("rc2_camp_dates_version") !== CAMP_DATES_VERSION) {
@@ -330,6 +330,11 @@ if (localStorage.getItem("rc2_opening_state_version") !== "day1-camp-week-v1") {
   campDaysStore.set([11,12,13,14,15,16,17]);
   todayCardStore.set({ dayLabel:"DAY 1", date:"OCT 11", desc:"로열캠프에 오신 것을 환영합니다.\n입소 및 등록 후 오리엔테이션에 참석해 주세요." });
   localStorage.setItem("rc2_opening_state_version", "day1-camp-week-v1");
+}
+// Set the requested filming day once; subsequent admin edits are retained.
+if (localStorage.getItem("rc2_today_day2_version") !== "2027-10-12-v1") {
+  todayCardStore.set({ dayLabel:"DAY 2", date:"2027.10.12", desc:"오늘은 갤러리 수업이 있는 날입니다.\nTPO에 맞는 적절한 복장을 갖추어 참석해 주세요." });
+  localStorage.setItem("rc2_today_day2_version", "2027-10-12-v1");
 }
 function getTodayCard(){ return todayCardStore.get(); }
 function setTodayCard(val){ todayCardStore.set(val); }
